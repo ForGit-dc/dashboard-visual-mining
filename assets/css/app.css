@@ -212,6 +212,7 @@ main { min-height: 0; position: relative; outline: none; }
 .vue.active { display: block; }
 .vue--plein { height: calc(100vh - var(--hauteur-haut, 150px)); min-height: 560px; }
 .vue--plein.active { display: grid; }
+.vue--plein:fullscreen { height: 100vh; background: var(--papier); }
 
 .page { max-width: 1320px; margin: 0 auto; padding: 22px var(--marge) 64px; }
 .page--large { max-width: 1720px; }

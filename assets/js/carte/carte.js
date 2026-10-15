@@ -291,7 +291,8 @@ export class VueCarte {
    */
   dessineRegions(ctx) {
     const z = this.vue.k / this.k0;
-    if (z > 1.8 || etat.get("iso").length) return [];
+    // Masqués pendant la séquence : les légendes d'événements prennent leur place.
+    if (z > 1.8 || etat.get("iso").length || etat.get("t") !== null) return [];
     const regions = this.d.meta.continents || [];
     const rectangles = [];
     ctx.save();
@@ -402,7 +403,8 @@ export class VueCarte {
     const de = [this.vue.cx, this.vue.cy, this.largeur / this.vue.k];
     const vers = [cible.cx, cible.cy, this.largeur / cible.k];
     const interp = d3.interpolateZoom(de, vers);
-    const total = duree ?? Math.min(900, Math.max(250, interp.duration * 0.6));
+    const sansMouvement = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const total = sansMouvement ? 1 : (duree ?? Math.min(900, Math.max(250, interp.duration * 0.6)));
     const debut = performance.now();
     cancelAnimationFrame(this.animation);
     const pas = (maintenant) => {
