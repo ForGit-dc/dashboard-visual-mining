@@ -76,10 +76,12 @@ export function construitFiche(donnees, f, actions) {
     </section>
 
     <section class="fiche__section">
-      <h4>Les ${premieres.length} images les plus centrales</h4>
+      <h4>Les ${premieres.length} premières images locales</h4>
       <div class="mini-planche">${premieres.map((e, k) => `
         <button type="button" data-k="${k}" aria-label="Agrandir l'image ${k + 1}"><img src="${donnees.vignette(e)}" alt="" loading="lazy" decoding="async" width="110" height="110"></button>`).join("")}</div>
-      <p class="petit discret" style="margin-top:6px">${accord(f.echantillon.length, "image locale", "images locales")} sur ${entier(f.n)} : les 10 % les plus certaines du cluster.</p>
+      <p class="petit discret" style="margin-top:6px">${accord(f.echantillon.length, "image locale", "images locales")} sur ${entier(f.n)},
+        publiées du ${jourCourt(donnees.datesEchantillon(f).premier)} au ${jourCourt(donnees.datesEchantillon(f).dernier)} :
+        l'échantillon du dépôt montre le début du mois, pas les pics (<a href="#/limites">pourquoi</a>).</p>
     </section>
 
     ${f.eng.part_premier >= 0.25 ? `<p class="note-lecture">Un seul post pèse <strong>${pct(f.eng.part_premier, 0)}</strong> des engagements de ce cluster (${entier(f.eng.max)}). Lisez la médiane, pas le total.</p>` : ""}

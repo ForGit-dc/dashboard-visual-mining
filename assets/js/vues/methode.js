@@ -70,7 +70,8 @@ soft clustering désactivé</code>
               (<code>brief/data-derivee/cluster_x_famille.csv</code>) ; il ne peut pas être recalculé à partir des CSV du dépôt, qui ne disent pas de quelle liste vient chaque image.</p>
             <h3 style="margin-top:18px">Lecture manuelle des clusters</h3>
             <p class="petit">La « logique » (sujet, genre, gabarit), la phrase « ce qu'on voit » et les notes sur les labels viennent d'une lecture des images les plus centrales
-              de chaque cluster, consignée dans <code>annotations/lecture_clusters.csv</code>. C'est une annotation d'analyste, pas une donnée : vous pouvez la contester planche à l'appui.</p>
+              de chaque cluster, consignée dans <code>annotations/lecture_clusters.csv</code>. C'est une annotation d'analyste, pas une donnée : vous pouvez la contester planche à l'appui.
+              Elle porte sur les images locales, publiées pour l'essentiel en début de mois (voir « Ce que la méthode rate », section 2).</p>
           </div>
         </section>
 

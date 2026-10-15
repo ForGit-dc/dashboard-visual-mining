@@ -15,7 +15,7 @@ export const REFERENCES = [
     theme: "Lire une projection UMAP",
     items: [
       { titre: "How to Use t-SNE Effectively", auteurs: "M. Wattenberg, F. Viégas, I. Johnson", publication: "Distill, 2016", url: "https://distill.pub/2016/misread-tsne/",
-        retenu: "La taille des amas et les distances entre amas ne se lisent pas. Repris dans « Ce que la méthode rate », section 7." },
+        retenu: "La taille des amas et les distances entre amas ne se lisent pas. Repris dans « Ce que la méthode rate », section 8." },
       { titre: "Understanding UMAP", auteurs: "A. Coenen, A. Pearce (Google PAIR)", publication: "2019", url: "https://pair-code.github.io/understanding-umap/",
         retenu: "Effet de n_neighbors et min_dist sur la forme du nuage ; min_dist = 0 tasse les points, ce que la carte doit dire." },
       { titre: "UMAP : paramètres", auteurs: "L. McInnes et al.", publication: "documentation umap-learn", url: "https://umap-learn.readthedocs.io/en/latest/parameters.html",

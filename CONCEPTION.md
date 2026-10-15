@@ -10,7 +10,7 @@ de la section 8 du brief, ce que j'écarte et pourquoi.
 
 `python brief/verifier_donnees.py` passe : volumétrie, jointures, dates, totaux.
 Mais trois constats de la section 6 ne tiennent pas une fois les données
-regardées de près. Je les signale parce que le brief le demande, et parce
+regardées de près, et la description de l'échantillon d'images est incomplète. Je les signale parce que le brief le demande, et parce
 qu'un analyste client les trouverait.
 
 **a. Le total d'engagements compte certains posts deux, trois ou quatre fois.**
@@ -41,6 +41,17 @@ mélangé est Industrie Agroalimentaire (0,91), puis Animaux et Humains (0,87),
 Cartographie Géopolitique (0,82), et Aéronautique Militaire seulement
 quatrième (0,81). Le dashboard affiche l'entropie, et cite la part dominante en
 regard.
+
+**d. L'échantillon d'images est daté du début du mois.** Les 4 859 images locales
+ont toutes une probabilité de 1, mais 62 % des points classés sont dans ce cas.
+Le tirage s'est départagé par `document_id` croissant : vérifié dans les 64
+clusters. Comme `document_id` suit l'ordre de publication (corrélation 0,994),
+68 % des images locales datent du 1er au 4 septembre, presque aucune n'est
+postérieure au 23, aucune ne tombe un jour de pic. Les planches montrent donc le
+début du mois ; les chiffres et la carte, qui portent sur les 65 229 images, ne
+sont pas touchés. Le dashboard le dit dans les planches, les fiches et la vue
+« Limites » ; pour une prochaine extraction, tirer au hasard parmi les
+probabilités 1 ou stratifier par jour.
 
 **Détails mineurs.** Les CSV du dépôt sont en LF, pas en CRLF (le chargement
 gère les deux). 1 468 images sont des PNG, pas des JPG. Les images pèsent

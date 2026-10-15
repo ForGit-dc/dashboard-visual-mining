@@ -198,11 +198,11 @@ export default class VueTemps {
           ${e.sources.map((s) => `<a href="${html(s.url)}" target="_blank" rel="noopener">${html(s.editeur)}, ${html(s.titre)} ↗</a>`).join("<br>")}</span></li>`).join("")}</ol>`
           : `<p class="note-lecture">Aucun événement sourcé pour ce cluster. Son pic du ${jourCourt(f.pic)} n'est pas expliqué ici : je n'ai pas trouvé de source fiable qui le date.</p>`}</div>
       </div>
-      <div id="avant-apres" style="margin-top:22px"></div>`;
+      <div id="temps-avant-apres" style="margin-top:22px"></div>`;
     zone.querySelector("#choix-temps").addEventListener("change", (e) => etat.change({ focus: Number(e.target.value) }));
     zone.querySelector("#voir-carte").addEventListener("click", () => this.nav("carte", { sel: id, iso: [id] }));
     this.courbeDetail(zone.querySelector("#detail-courbe"), f, evts);
-    this.avantApres(zone.querySelector("#avant-apres"), f);
+    this.avantApres(zone.querySelector("#temps-avant-apres"), f);
   }
 
   courbeDetail(zone, f, evts) {
@@ -254,7 +254,8 @@ export default class VueTemps {
         ${liste.length ? `<div class="mini-planche" style="grid-template-columns:repeat(6,1fr)">${liste.slice(0, max).map((e) => `
           <button type="button" data-rang="${e.rang}" aria-label="Agrandir"><img src="${this.d.vignette(e)}" alt="" loading="lazy" width="96" height="96"></button>`).join("")}</div>
           <p class="petit discret" style="margin-top:4px">${accord(Math.min(max, liste.length), "image")} affichée${Math.min(max, liste.length) > 1 ? "s" : ""} sur ${entier(liste.length)} dans l'échantillon local.</p>`
-          : `<p class="vide">Aucune image locale ce jour-là : l'échantillon (10 % les plus certaines) n'en contient pas.</p>`}
+          : `<p class="vide"><strong>Aucune image locale ce jour-là.</strong>L'échantillon du dépôt a été tiré dans l'ordre de publication :
+              il s'arrête pour ce cluster le ${jourCourt(this.d.datesEchantillon(f).dernier)}. Voir « Ce que la méthode rate ».</p>`}
       </div>`;
     zone.innerHTML = `<h4 class="pc" style="font-size:12px;margin:0 0 4px">Avant / après</h4>
       <p class="chapeau" style="margin-bottom:10px">Les images du jour de pic ressemblent-elles au reste du cluster ? Si oui, le pic est un surcroît de volume ; si non, l'événement a apporté ses propres images.</p>

@@ -10,6 +10,7 @@ import { entier, pct, jourCourt, mediane, html, plie, accord, minuteLongue, enLe
 import { FAMILLES, barreComposition } from "../couleurs.js";
 import { LOGIQUES, REGIMES } from "../textes.js";
 import { ouvre as ouvreVisionneuse } from "../ui/visionneuse.js";
+import { courbe } from "../ui/mini.js";
 
 const TRIS = [
   ["certitude", "Certitude"],
@@ -75,9 +76,12 @@ export default class VuePlanches {
       <header class="page__entete" style="max-width:1100px">
         <span class="kicker">Vue 5 · Planches contact</span>
         <h2>Les noms disent le sujet ; les planches montrent que CLIP range aussi des formats et des chartes graphiques</h2>
-        <p class="chapeau">Les neuf images les plus centrales de chaque cluster, rangées selon ce que le cluster regroupe vraiment
-          (lecture manuelle des images). Cliquez une planche pour l'ouvrir en grand. Les 4&#8239;859 images du dépôt sont les 10 %
-          les plus certaines de chaque cluster : on voit le cœur des clusters, pas leurs bords.</p>
+        <p class="chapeau">Les neuf premières images de chaque cluster, rangées selon ce que le cluster regroupe vraiment
+          (lecture manuelle des images). Cliquez une planche pour l'ouvrir en grand.</p>
+        <p class="note-lecture"><strong>Ces images datent surtout du début du mois.</strong> Les 4&#8239;859 images du dépôt sont toutes au cœur de leur cluster
+          (probabilité 1), mais parmi ces points certains elles ont été prises dans l'ordre des identifiants, c'est-à-dire de publication :
+          ${pct(this.d.meta.echantillon.tirage.part_4_premiers_jours, 0)} ont été publiées du 1<sup>er</sup> au 4 septembre, presque aucune après le 23.
+          Les planches montrent comment chaque cluster commence le mois, pas ses pics. <a href="#/limites">Détail dans « Ce que la méthode rate »</a>.</p>
       </header>
       ${groupes.map(([l, fiches]) => `
         <section class="bloc">
@@ -164,10 +168,11 @@ export default class VuePlanches {
       <p class="petit discret">${accord(images.length, "image locale", "images locales")} sur ${entier(f.n)} · ${FAMILLES[f.dominante]} ${pct(f.part_dominante, 0)} ·
         médiane ${mediane(f.eng.mediane)} engagements par post · pic le ${jourCourt(f.pic)} (${pct(f.pct_pic / 100, 0)}), régime ${regime.nom.toLowerCase()}
         ${groupesIci.size ? ` · ${accord(groupesIci.size, "groupe")} de quasi-doublons (${enDoublon} images, signalées ×n)` : ""}</p>
+      ${this.dates(f)}
       <div class="planche__outils">
         <label class="interrupteur">Vignettes par ligne <input type="range" min="3" max="12" step="1" value="${v.colonnes}" id="colonnes-planche" style="width:110px"> <span class="num">${v.colonnes}</span></label>
         <span class="carte__groupe"><span class="libelle">Ordre</span><span class="segments">${TRIS.map(([k, l]) => `<button type="button" data-tri="${k}" aria-pressed="${v.triPlanche === k}">${l}</button>`).join("")}</span></span>
-        <label class="interrupteur" title="Sépare les images du jour de pic de celles du reste du mois"><input type="checkbox" id="avant-apres" ${v.avantApres ? "checked" : ""}> Jour du pic contre le reste</label>
+        <label class="interrupteur" title="Sépare les images du jour de pic de celles du reste du mois"><input type="checkbox" id="planche-avant-apres" ${v.avantApres ? "checked" : ""}> Jour du pic contre le reste</label>
       </div>
       <div id="planche-corps"></div>
       <p class="source-graphe" style="margin-top:12px">Ordre « certitude » : probabilité HDBSCAN décroissante, puis proximité du point le plus dense du cluster.
@@ -178,8 +183,10 @@ export default class VuePlanches {
     if (v.avantApres) {
       const duPic = images.filter((e) => Math.floor(p.minute[e.point] / 1440) === f.pic);
       const reste = images.filter((e) => Math.floor(p.minute[e.point] / 1440) !== f.pic);
+      const absent = `<div class="vide"><strong>Aucune image locale ce jour-là</strong>L'échantillon a été tiré dans l'ordre de publication et s'arrête
+        pour ce cluster le ${jourCourt(this.d.datesEchantillon(f).dernier)} : le jour du pic n'y figure pas. Le pic se lit sur la carte (séquence) et dans la vue Temps.</div>`;
       corps.innerHTML = `<div class="avant-apres">
-        <div><h4>Le jour du pic, ${jourCourt(f.pic)} · ${accord(duPic.length, "image")}</h4>${this.grille(duPic, Math.max(3, Math.round(v.colonnes / 2)))}</div>
+        <div><h4>Le jour du pic, ${jourCourt(f.pic)} · ${accord(duPic.length, "image")}</h4>${duPic.length ? this.grille(duPic, Math.max(3, Math.round(v.colonnes / 2))) : absent}</div>
         <div><h4>Le reste du mois · ${accord(reste.length, "image")}</h4>${this.grille(reste, Math.max(3, Math.round(v.colonnes / 2)))}</div></div>`;
       corps.querySelectorAll(".planche").forEach((pl, k) => this.branche(pl, k === 0 ? duPic : reste));
     } else {
@@ -189,10 +196,22 @@ export default class VuePlanches {
 
     zone.querySelector("#colonnes-planche").addEventListener("input", (e) => etat.change({ colonnes: Number(e.target.value) }));
     zone.querySelectorAll("[data-tri]").forEach((b) => b.addEventListener("click", () => etat.change({ triPlanche: b.dataset.tri })));
-    zone.querySelector("#avant-apres").addEventListener("change", (e) => etat.change({ avantApres: e.target.checked }));
+    zone.querySelector("#planche-avant-apres").addEventListener("change", (e) => etat.change({ avantApres: e.target.checked }));
     zone.querySelector('[data-action="carte"]').addEventListener("click", () => this.nav("carte", { sel: f.id, iso: [f.id] }));
     zone.querySelector('[data-action="temps"]').addEventListener("click", () => this.nav("temps", { focus: f.id }));
     zone.querySelector('[data-action="mur"]').addEventListener("click", () => etat.change({ planche: null }));
+  }
+
+  /** Dates du cluster contre dates de ses images locales : le biais de l'échantillon, cluster par cluster. */
+  dates(f) {
+    const e = this.d.datesEchantillon(f);
+    if (e.premier === null) return "";
+    return `<div style="display:flex;gap:28px;align-items:flex-end;flex-wrap:wrap;margin:6px 0 2px">
+      <div><div class="petit discret">Le cluster, du 1<sup>er</sup> au 29 sept.</div>${courbe(f.serie, { largeur: 220, hauteur: 26, weekend: true })}</div>
+      <div><div class="petit discret">Ses images locales</div>${courbe(e.serie, { largeur: 220, hauteur: 26, weekend: true, pic: false })}</div>
+      <p class="petit" style="margin:0;max-width:420px">Images locales publiées du ${jourCourt(e.premier)} au ${jourCourt(e.dernier)}${f.pic > e.dernier ? `, avant le pic du ${jourCourt(f.pic)}` : ""} :
+        l'échantillon montre le début du mois.</p>
+    </div>`;
   }
 
   grille(images, colonnes) {

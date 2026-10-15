@@ -353,6 +353,37 @@ def main():
     verifie(len(echantillon) == 4859, f"4 859 vignettes attendues, {len(echantillon)} dans l'index")
     groupe = groupes_doublons([v["dhash"] for _, v in echantillon])
 
+    # ----- comment l'échantillon a été tiré
+    # Le brief dit « 10 % par probabilité décroissante ». Or 62 % des points
+    # classés ont une probabilité de 1 : le tirage s'est départagé ailleurs. On
+    # vérifie l'hypothèse « plus petits document_id parmi les probabilités 1 »,
+    # et comme document_id suit l'ordre de publication, l'échantillon est daté.
+    locaux = np.zeros(n, dtype=bool)
+    for i, _ in echantillon:
+        locaux[i] = True
+    doc_ids = np.array([r["document_id"] for r in lignes], dtype=np.int64)
+    tirage_par_id = 0
+    for c in range(64):
+        idx = np.nonzero(cl == c)[0]
+        k = int(locaux[idx].sum())
+        certains = idx[probs[idx] == 1.0]
+        premiers = set(certains[np.argsort(doc_ids[certains])[:k]].tolist())
+        tirage_par_id += premiers == set(idx[locaux[idx]].tolist())
+    jours_locaux = np.bincount(jours[locaux], minlength=NB_JOURS)
+    jours_classes = np.bincount(jours[cl >= 0], minlength=NB_JOURS)
+    biais = {
+        "proba_toutes_a_1": bool((probs[locaux] == 1.0).all()),
+        "part_points_classes_proba_1": float((probs[cl >= 0] == 1.0).mean()),
+        "clusters_tires_par_plus_petits_id": int(tirage_par_id),
+        "correlation_id_date": float(np.corrcoef(doc_ids, minutes)[0, 1]),
+        "images_par_jour": jours_locaux.tolist(),
+        "part_par_jour": (jours_locaux / np.maximum(jours_classes, 1)).tolist(),
+        "part_4_premiers_jours": float(jours_locaux[:4].sum() / locaux.sum()),
+        "dernier_jour": int(np.nonzero(jours_locaux)[0].max()),
+    }
+    print(f"échantillon : {biais['clusters_tires_par_plus_petits_id']}/64 clusters tirés par plus petits document_id "
+          f"parmi les probabilités 1 ; {biais['part_4_premiers_jours']:.0%} des images locales publiées du 1er au 4 septembre")
+
     # ----- fiches de cluster
     enr = {normalise_cluster(r["cluster_id"]): r for r in enrichis}
     fam = {normalise_cluster(r["cluster_id"]): r for r in familles}
@@ -600,7 +631,7 @@ def main():
                   "colonnes": [{"nom": "id", "type": "uint64", "decalage": 0},
                                {"nom": "images", "type": "uint8", "decalage": 8 * nb_posts}]},
         "echantillon": {"colonnes": ["point", "document_id", "vignette_l", "vignette_h", "original_l", "original_h", "groupe_doublon"],
-                        "seuil_doublon_bits": SEUIL_DOUBLON},
+                        "seuil_doublon_bits": SEUIL_DOUBLON, "tirage": biais},
         "palette_clusters": PALETTE_CLUSTERS,
         "coloration_pire_ecart": pire_ecart,
         "continents": continents,

@@ -31,6 +31,7 @@ export default class VueLimites {
     const nonExpliques = donnees.clusters.filter((f) => f.pic_sur_mediane >= 3.5 && !(evtsParCluster.get(f.id) || []).includes(f.pic))
       .sort((a, b2) => b2.pic_sur_mediane - a.pic_sur_mediane);
     const nuls = t.proba_nulle_hors_bruit || {};
+    const tirage = donnees.meta.echantillon.tirage;
 
     el.innerHTML = `
       <div class="page">
@@ -60,7 +61,27 @@ export default class VueLimites {
         </section>
 
         <section class="limite">
-          <span class="limite__num">2 · un événement, trois clusters</span>
+          <span class="limite__num">2 · l'échantillon d'images</span>
+          <h3>Les images du dépôt montrent le début du mois : ${pct(tirage.part_4_premiers_jours, 0)} ont été publiées du 1<sup>er</sup> au 4 septembre</h3>
+          <div class="colonnes colonnes--2">
+            <div>
+              <p>Le brief décrit les ${entier(t.images_locales)} images locales comme « les 10 % les plus représentatifs de chaque cluster, sélectionnés par probabilité décroissante ».
+                C'est vrai, mais incomplet : ${pct(tirage.part_points_classes_proba_1, 0)} des points classés ont une probabilité de 1, bien plus que 10 %.
+                Le tirage s'est donc départagé ailleurs, et les données le montrent sans ambiguïté : dans les ${tirage.clusters_tires_par_plus_petits_id} clusters sur 64,
+                les images locales sont exactement les plus petits <code>document_id</code> parmi les points de probabilité 1.</p>
+              <p>Or <code>document_id</code> suit l'ordre de publication (corrélation ${decimal(tirage.correlation_id_date, 3)}).
+                L'échantillon est donc daté : plus de la moitié des images des trois premiers jours sont en local, presque aucune après le 23,
+                aucune le jour d'un pic événementiel.</p>
+              <p><strong>Ce que cela change.</strong> Les planches contact, les vignettes de la carte et les quasi-doublons décrivent le début du mois.
+                Les lectures des clusters (« ce qu'on voit ») aussi. Les chiffres, les courbes et la carte, eux, portent sur les ${entier(t.images)} images : ils ne sont pas touchés.</p>
+              <p><strong>Pour la prochaine extraction</strong> : tirer l'échantillon au hasard parmi les points de probabilité 1, ou le stratifier par jour (10 % de chaque cluster et de chaque jour).</p>
+            </div>
+            <div class="graphe" id="biais-echantillon"></div>
+          </div>
+        </section>
+
+        <section class="limite">
+          <span class="limite__num">3 · un événement, trois clusters</span>
           <h3>La visite du pape est rangée sur les deux continents de la carte : vignettes titrées d'un côté, photos de l'autre</h3>
           <p class="chapeau">Visite de Léon XIV (4), Pape Catholique (13) et Visite Papale (14) culminent les 25 et 26 septembre. HDBSCAN les sépare par le format,
             pas par le sujet : le 4 rassemble des vignettes d'articles titrées et se trouve parmi les images faites de texte ; le 13 (portraits)
@@ -70,7 +91,7 @@ export default class VueLimites {
         </section>
 
         <section class="limite">
-          <span class="limite__num">3 · des chartes, pas des sujets</span>
+          <span class="limite__num">4 · des chartes, pas des sujets</span>
           <h3>${enLettres(gabarits.length).charAt(0).toUpperCase() + enLettres(gabarits.length).slice(1)} clusters regroupent la charte graphique d'un éditeur plutôt qu'un sujet</h3>
           <p class="chapeau">CLIP voit la mise en page autant que le contenu : bandeau, logo, typographie. Quand un média publie toutes ses vignettes sur le même gabarit,
             le cluster capte ce gabarit. Actualités Régionales n'est pas « l'actualité régionale » : ce sont les cartes Hérault Tribune.
@@ -79,7 +100,7 @@ export default class VueLimites {
         </section>
 
         <section class="limite">
-          <span class="limite__num">4 · la production à vide</span>
+          <span class="limite__num">5 · la production à vide</span>
           <h3>${enLettres(vide.length).charAt(0).toUpperCase() + enLettres(vide.length).slice(1)} clusters ont une médiane d'au plus un engagement par post : ${entier(imagesVide)} images, ${pct(imagesVide / t.images)} du corpus</h3>
           <p class="chapeau">Une partie mesurable de la production médiatique ne rencontre personne. Ce sont surtout des flux d'éditeurs (gabarits) et des visuels
             de culture populaire publiés en série. Ce n'est pas une limite de la méthode : c'est un résultat. Mais il pèse sur tout classement par volume.</p>
@@ -89,7 +110,7 @@ export default class VueLimites {
         </section>
 
         <section class="limite">
-          <span class="limite__num">5 · les engagements</span>
+          <span class="limite__num">6 · les engagements</span>
           <h3>Sommés par image, les engagements comptent ${entier(t.posts_multi_images)} posts deux à quatre fois</h3>
           <p>Le champ <code>engagements</code> est celui du post, recopié sur chacune de ses images. ${entier(t.images_dans_posts_multi)} images (${pct(t.images_dans_posts_multi / t.images)})
             appartiennent à un post qui en porte plusieurs. La somme par image vaut ${entier(t.engagements_par_image)} ; la somme par post, la seule qui ait un sens,
@@ -100,7 +121,7 @@ export default class VueLimites {
         </section>
 
         <section class="limite">
-          <span class="limite__num">6 · des labels qui trompent</span>
+          <span class="limite__num">7 · des labels qui trompent</span>
           <h3>${enLettres(notes.length).charAt(0).toUpperCase() + enLettres(notes.length).slice(1)} labels décrivent mal ce que montrent les images</h3>
           <p class="chapeau">Les labels ont été produits automatiquement puis revus. À la lecture des images les plus centrales, certains nomment un sujet que les images ne montrent pas.
             Les labels d'origine sont conservés partout ; la correction est signalée dans la fiche de chaque cluster.</p>
@@ -109,7 +130,7 @@ export default class VueLimites {
         </section>
 
         <section class="limite">
-          <span class="limite__num">7 · lire la carte</span>
+          <span class="limite__num">8 · lire la carte</span>
           <h3>Sur la carte UMAP, la position dit « ressemble à », pas « est proche de »</h3>
           <ul>
             <li><strong>Les distances entre clusters ne se lisent pas</strong> comme des distances : UMAP préserve les voisinages, pas les écarts lointains. Deux clusters éloignés ne sont pas forcément « opposés ».</li>
@@ -123,7 +144,7 @@ export default class VueLimites {
         </section>
 
         <section class="limite">
-          <span class="limite__num">8 · des pics sans explication</span>
+          <span class="limite__num">9 · des pics sans explication</span>
           <h3>${enLettres(nonExpliques.length).charAt(0).toUpperCase() + enLettres(nonExpliques.length).slice(1)} pics marqués ne sont pas annotés : je n'ai pas trouvé de source qui les date</h3>
           <p class="chapeau">Règle suivie : pas de source fiable, pas d'annotation. Quand un événement sourcé tombe quelques jours avant le pic, la correspondance n'est pas forcée.</p>
           <table class="tableau-simple"><thead><tr><th>Cluster</th><th class="n">Pic</th><th class="n">× médiane</th><th class="n">Au pic</th><th>Événement voisin annoté</th></tr></thead>
@@ -135,7 +156,7 @@ export default class VueLimites {
         </section>
 
         <section class="limite">
-          <span class="limite__num">9 · ce qui n'est pas dans les données</span>
+          <span class="limite__num">10 · ce qui n'est pas dans les données</span>
           <h3>Ce que ce dashboard ne peut pas montrer, et ne simule pas</h3>
           <ul class="liste-absences">
             <li><strong>Le compte auteur</strong> de chaque post : impossible de dire qui publie une image, ni si deux quasi-doublons viennent du même compte.</li>
@@ -152,6 +173,7 @@ export default class VueLimites {
 
     el.querySelector("#voir-bruit").addEventListener("click", () => this.nav("carte", { bruit: true, iso: [], sel: null, cadrage: null }));
     this.bruitFamilles();
+    this.biaisEchantillon();
     this.troisPapes();
     this.regroupement();
     this.gabarits(gabarits);
@@ -193,6 +215,40 @@ export default class VueLimites {
       svg: () => svg.node(), nom: "spine-691-bruit-par-famille.png", titre: "Part des images non classées, par famille d'acteurs",
       donnees: () => [fam.map((f) => ({ famille: f.nom, images: f.images, bruit: f.bruit, taux: decimal(f.taux_bruit * 100, 1) })),
         [["famille", "famille"], ["images", "images"], ["bruit", "non classées"], ["taux", "taux (%)"]]],
+    });
+  }
+
+  /** Part des images classées de chaque jour qui sont disponibles en local. */
+  biaisEchantillon() {
+    const zone = this.el.querySelector("#biais-echantillon");
+    const tirage = this.d.meta.echantillon.tirage;
+    const parts = tirage.part_par_jour;
+    const l = 480, h = 210, m = { g: 40, d: 10, h: 30, b: 26 };
+    const x = d3.scaleBand().domain(d3.range(29)).range([m.g, l - m.d]).paddingInner(0.2);
+    const y = d3.scaleLinear().domain([0, 0.7]).range([h - m.b, m.h]);
+    const svg = d3.select(zone).append("svg").attr("viewBox", `0 0 ${l} ${h}`).attr("width", "100%").attr("role", "img")
+      .attr("aria-label", "Part des images classées de chaque jour disponibles en local");
+    svg.append("text").attr("class", "titre-axe").attr("x", m.g).attr("y", 12).text("Part des images classées de chaque jour disponibles en local");
+    svg.append("g").attr("class", "grille").selectAll("line").data([0.2, 0.4, 0.6]).join("line")
+      .attr("x1", m.g).attr("x2", l - m.d).attr("y1", (v) => y(v)).attr("y2", (v) => y(v));
+    svg.append("g").attr("class", "axe").selectAll("text").data([0, 0.2, 0.4, 0.6]).join("text")
+      .attr("x", m.g - 6).attr("y", (v) => y(v) + 3.5).attr("text-anchor", "end").text((v) => pct(v, 0));
+    svg.append("line").attr("x1", m.g).attr("x2", l - m.d).attr("y1", y(0.1)).attr("y2", y(0.1)).attr("stroke", "#1b1a17").attr("stroke-width", 1);
+    svg.append("text").attr("class", "titre-axe").attr("x", l - m.d).attr("y", y(0.1) - 5).attr("text-anchor", "end").text("10 % attendus si l'échantillon suivait le mois");
+    svg.append("g").selectAll("rect").data(parts).join("rect")
+      .attr("x", (_, j) => x(j)).attr("width", x.bandwidth()).attr("y", (v) => y(v)).attr("height", (v) => y(0) - y(v)).attr("fill", "#1b1a17")
+      .on("pointerenter pointermove", (ev, v) => {
+        const j = parts.indexOf(v);
+        infobulle.montre(`<div class="infobulle__valeur">${pct(v, 1)}</div><div class="discret">${jourCourt(j)} : ${entier(tirage.images_par_jour[j])} images locales</div>`, ev.clientX, ev.clientY);
+      })
+      .on("pointerleave", () => infobulle.cache({ force: true }));
+    svg.append("g").attr("class", "axe").selectAll("text.j").data([0, 6, 13, 20, 27]).join("text")
+      .attr("x", (j) => x(j) + x.bandwidth() / 2).attr("y", h - 8).attr("text-anchor", "middle").text((j) => (j === 0 ? "1er" : j + 1));
+    outils(zone, {
+      svg: () => svg.node(), nom: "spine-691-biais-echantillon.png", titre: "Les images du dépôt montrent le début du mois",
+      sousTitre: "Part des images classées de chaque jour disponibles en local (échantillon de 4 859 images)",
+      donnees: () => [parts.map((v, j) => ({ jour: `2026-09-${String(j + 1).padStart(2, "0")}`, locales: tirage.images_par_jour[j], part: decimal(v * 100, 1) })),
+        [["jour", "jour"], ["locales", "images locales"], ["part", "part des images classées (%)"]]],
     });
   }
 

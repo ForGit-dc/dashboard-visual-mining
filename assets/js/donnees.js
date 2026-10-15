@@ -216,6 +216,23 @@ export class Donnees {
     return { images, posts: valeurs.length, mediane: q(0.5), q90: q(0.9), somme, max: valeurs[valeurs.length - 1] || 0 };
   }
 
+  /**
+   * Jours de publication des images locales d'un cluster. L'échantillon a été
+   * tiré parmi les points de probabilité 1 par ordre de document_id, donc par
+   * ordre de publication : il couvre surtout le début du mois (voir Limites).
+   */
+  datesEchantillon(f) {
+    const jours = f.echantillon.map((r) => Math.floor(this.p.minute[this.echantillon[r].point] / 1440)).sort((a, b) => a - b);
+    const serie = new Array(29).fill(0);
+    for (const j of jours) serie[j]++;
+    return {
+      serie,
+      premier: jours[0] ?? null,
+      dernier: jours[jours.length - 1] ?? null,
+      mediane: jours.length ? jours[Math.floor(jours.length / 2)] : null,
+    };
+  }
+
   /** Série quotidienne cumulée d'un ensemble de clusters. */
   serie(ids) {
     const s = new Array(29).fill(0);
