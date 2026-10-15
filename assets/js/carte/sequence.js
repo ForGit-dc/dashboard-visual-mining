@@ -117,7 +117,7 @@ export class Sequence {
       const lundi = new Date(Date.UTC(2026, 8, 1 + i)).getUTCDay() === 1;
       if (i === 0 || lundi || i === 28) {
         etiquettes.append("text").attr("x", this.x(i * 1440 + 720)).attr("y", h - 4).attr("text-anchor", "middle")
-          .attr("font-size", 10.5).attr("fill", i === 0 || i === 28 ? "#1b1a17" : "#6f695d").attr("font-family", "Libre Franklin, sans-serif")
+          .attr("font-size", 10.5).attr("fill", i === 0 || i === 28 ? "#1b1a17" : "#6f695d").attr("font-family", "Public Sans, sans-serif")
           .text(i === 0 ? "1er sept." : String(i + 1));
       }
     });

@@ -26,7 +26,7 @@ const TITRES = {
   cluster: "Deux continents : à gauche des photographies, à droite des images faites de texte",
   famille: "Deux tiers des images d'Officials sont des photos de terrain ; les Media tiennent les vignettes titrées",
   vectors: "Les Vectors pèsent 13,2 % du corpus, mais jusqu'à six fois plus dans quelques genres d'images",
-  resonance: "Les images les plus reprises ne sont pas dans les plus gros clusters",
+  resonance: "Les photographies sont trois fois plus reprises que les images faites de texte : médiane 16 engagements par post contre 5",
 };
 
 export class VueCarte {
@@ -296,7 +296,7 @@ export class VueCarte {
     ctx.save();
     ctx.textAlign = "center";
     ctx.textBaseline = "alphabetic";
-    ctx.font = `600 11px "Libre Franklin", sans-serif`;
+    ctx.font = `600 11px "Public Sans", sans-serif`;
     for (const r of regions) {
       const [x, y] = this.versEcran(r.x, r.y);
       const texte = r.nom.toUpperCase().split("").join(" ");
@@ -304,7 +304,7 @@ export class VueCarte {
       ctx.fillText(texte, x, y);
       ctx.font = `italic 400 12.5px Newsreader, Georgia, serif`;
       ctx.fillText(r.detail, x, y + 16);
-      ctx.font = `600 11px "Libre Franklin", sans-serif`;
+      ctx.font = `600 11px "Public Sans", sans-serif`;
     }
     ctx.restore();
   }
@@ -739,11 +739,11 @@ export class VueCarte {
     c.font = `500 ${22 * u}px Newsreader, Georgia, serif`;
     c.textBaseline = "alphabetic";
     c.fillText(titre ?? (TITRES[etat.get("couleur")] || ""), 18 * u, 30 * u);
-    c.font = `400 ${12 * u}px "Libre Franklin", sans-serif`;
+    c.font = `400 ${12 * u}px "Public Sans", sans-serif`;
     c.fillStyle = "#4a463e";
     c.fillText(sousTitre ?? this.sousTitreExport(), 18 * u, 50 * u);
     c.fillStyle = "#6f695d";
-    c.font = `400 ${10.5 * u}px "Libre Franklin", sans-serif`;
+    c.font = `400 ${10.5 * u}px "Public Sans", sans-serif`;
     c.fillText("SPINE France · analyse 691 · opsci.ai — CLIP ViT-H-14, UMAP (n_neighbors 15, min_dist 0), HDBSCAN (min_samples 6). Images publiées sur X du 1er au 29 septembre 2026.", 18 * u, out.height - 13 * u);
     c.strokeStyle = "#1b1a17";
     c.lineWidth = 1 * u;
@@ -777,7 +777,7 @@ export class VueCarte {
     c.fillStyle = "#1b1a17";
     c.font = `500 ${26 * u}px Newsreader, Georgia, serif`;
     c.fillText(jourMoyen(jour), out.width - 18 * u, 32 * u);
-    c.font = `600 ${11 * u}px "Libre Franklin", sans-serif`;
+    c.font = `600 ${11 * u}px "Public Sans", sans-serif`;
     c.fillStyle = "#6f695d";
     c.fillText(`${heure(t)} · ${entier(this.sequence.imagesPubliees(t))} images publiées`, out.width - 18 * u, 50 * u);
     const evts = this.d.evenements.filter((e) => e.jour === jour);
@@ -792,7 +792,7 @@ export class VueCarte {
         c.fillRect(14 * u, y - 16 * u, 3 * u, 40 * u);
         c.font = `500 ${15 * u}px Newsreader, Georgia, serif`;
         c.fillText(e.titre, 24 * u, y + 1 * u);
-        c.font = `400 ${10 * u}px "Libre Franklin", sans-serif`;
+        c.font = `400 ${10 * u}px "Public Sans", sans-serif`;
         c.fillStyle = "#6f695d";
         c.fillText(`Source : ${e.sources[0].editeur}`, 24 * u, y + 17 * u);
         y += 46 * u;

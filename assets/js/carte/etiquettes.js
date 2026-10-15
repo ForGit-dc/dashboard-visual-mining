@@ -26,7 +26,7 @@ export function place(ctx, candidats, largeur, hauteur, { marge = 3, obstacles =
   const ordre = [...candidats].sort((a, b) => (b.force - a.force) || (b.priorite - a.priorite));
   const sortie = [];
   for (const c of ordre) {
-    ctx.font = `${c.gras ? 700 : 600} ${c.taille}px "Libre Franklin", sans-serif`;
+    ctx.font = `${c.gras ? 700 : 600} ${c.taille}px "Public Sans", sans-serif`;
     const w = ctx.measureText(c.texte).width;
     const h = c.taille * 1.18;
     const pas = h * 0.95;
@@ -78,7 +78,7 @@ export function dessine(ctx, poses) {
     }
   }
   for (const p of poses) {
-    ctx.font = `${p.gras ? 700 : 600} ${p.taille}px "Libre Franklin", sans-serif`;
+    ctx.font = `${p.gras ? 700 : 600} ${p.taille}px "Public Sans", sans-serif`;
     const x = p.x + p.w / 2, y = p.y + p.h / 2 + 0.5;
     ctx.lineWidth = 3.5;
     ctx.strokeStyle = PAPIER;

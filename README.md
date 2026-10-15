@@ -51,7 +51,7 @@ assets/
   js/carte/                 rendu WebGL, index spatial, noms, séquence et vidéo
   js/vues/                  une vue par fichier, plus le parcours guidé
   js/ui/                    fiche, visionneuse, infobulle, recherche, exports
-  fonts/                    Newsreader, Libre Franklin, IBM Plex Mono (OFL)
+  fonts/                    Newsreader, Public Sans, IBM Plex Mono (OFL)
   vendor/                   D3 7.9.0 (ISC)
 data/                       GÉNÉRÉ par scripts/build_data.py, ne pas éditer
 vignettes/                  GÉNÉRÉ par scripts/build_vignettes.py, ne pas éditer

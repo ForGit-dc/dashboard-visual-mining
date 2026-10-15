@@ -167,6 +167,9 @@ async function demarre() {
 
   await active_(etat.get("vue"));
   etat.ecoute(["vue"], (_, v) => active_(v.vue));
+  // Les noms de la carte sont mesurés dans un canvas : on les replace une fois
+  // les polices chargées, sinon ils garderaient les métriques de la police de secours.
+  document.fonts.ready.then(() => vues.carte?.demandeRendu());
   if (etat.get("parcours") !== null) lanceParcours(etat.get("parcours"));
 
   document.addEventListener("keydown", clavier);

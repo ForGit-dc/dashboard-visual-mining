@@ -123,10 +123,12 @@ génériques (« ALERTE INFO »), captures d'une même émission.
 - Fond papier `#f5f3ee`, encre `#1b1a17`, filets d'un pixel. Ni ombre portée,
   ni dégradé, ni coin arrondi au-delà de 2 px.
 - Titres en **Newsreader** (Production Type, dessinée pour la lecture de
-  presse à l'écran), interface et chiffres en **Libre Franklin** (la
-  Franklin Gothic des pages graphiques de la presse américaine), codes et
-  identifiants en **IBM Plex Mono**. Chiffres tabulaires dans les colonnes.
-  Polices auto-hébergées : pas d'appel à Google Fonts depuis un poste client.
+  presse à l'écran), interface et chiffres en **Public Sans** (une Franklin
+  Gothic, dérivée de Libre Franklin, la famille des pages graphiques de la presse
+  américaine), codes et identifiants en **IBM Plex Mono**. Chiffres tabulaires
+  dans les colonnes. Libre Franklin, choisie d'abord, a été remplacée : sa version
+  web n'a pas de chiffres tabulaires (mesuré dans Chrome). Polices
+  auto-hébergées : pas d'appel à Google Fonts depuis un poste client.
 - Les quatre couleurs de famille sont réservées : Media `#2b6cb0`, Officials
   `#d69a16`, Vectors `#cf3d2e`, Influencers `#1b9e8f`. Palette passée au
   validateur (daltonisme protan/deutan, simulation Machado 2009) sur toutes

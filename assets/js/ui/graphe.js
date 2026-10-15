@@ -4,7 +4,7 @@
 import { telecharge, copie, notifie } from "./notifier.js";
 
 const POLICES = [
-  ["Libre Franklin", "normal", "300 800", "assets/fonts/libre-franklin-normal-300-800-latin.woff2"],
+  ["Public Sans", "normal", "300 800", "assets/fonts/public-sans-normal-300-800-latin.woff2"],
   ["Newsreader", "normal", "300 700", "assets/fonts/newsreader-normal-300-700-latin.woff2"],
   ["IBM Plex Mono", "normal", "400", "assets/fonts/ibm-plex-mono-normal-400-latin.woff2"],
 ];
@@ -52,7 +52,7 @@ export async function exportePng(svg, nom, { titre = "", sousTitre = "", source 
     clone.setAttribute("height", r.height);
     clone.classList.add("graphe");
     const style = document.createElementNS("http://www.w3.org/2000/svg", "style");
-    style.textContent = `${await polices()}\n${reglesGraphes().replace(/\.graphe\s+/g, "")}\ntext{font-family:"Libre Franklin",sans-serif}`;
+    style.textContent = `${await polices()}\n${reglesGraphes().replace(/\.graphe\s+/g, "")}\ntext{font-family:"Public Sans",sans-serif}`;
     clone.prepend(style);
     const texte = new XMLSerializer().serializeToString(clone);
     const img = new Image();
@@ -74,14 +74,14 @@ export async function exportePng(svg, nom, { titre = "", sousTitre = "", source 
       c.fillText(titre, marge, 30);
       if (sousTitre) {
         c.fillStyle = "#4a463e";
-        c.font = '400 12px "Libre Franklin", sans-serif';
+        c.font = '400 12px "Public Sans", sans-serif';
         c.fillText(sousTitre, marge, 50);
       }
     }
     c.drawImage(img, marge, haut, r.width, r.height);
     if (source) {
       c.fillStyle = "#6f695d";
-      c.font = '400 10.5px "Libre Franklin", sans-serif';
+      c.font = '400 10.5px "Public Sans", sans-serif';
       c.fillText(source, marge, haut + r.height + 22);
     }
     canvas.toBlob((b) => telecharge(b, nom), "image/png");

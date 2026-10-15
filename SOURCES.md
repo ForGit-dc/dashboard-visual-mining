@@ -101,7 +101,7 @@ Reporterre.
 - G. Machado, M. Oliveira, L. Fernandes, [A Physiologically-based Model for Simulation of Color Vision Deficiency](https://doi.org/10.1109/TVCG.2009.113), *IEEE TVCG* 15(6), 2009.
   Simulation protan et deutan utilisée pour valider la palette des familles et
   pour colorer les clusters voisins (`scripts/build_data.py`, fonction `coloration`).
-- Production Type, [Newsreader](https://github.com/productiontype/Newsreader) ; [Libre Franklin](https://github.com/googlefonts/Libre-Franklin) ; IBM, [Plex Mono](https://github.com/IBM/plex). Licence SIL OFL, fichiers et licences dans `assets/fonts/`.
+- Production Type, [Newsreader](https://github.com/productiontype/Newsreader) ; USWDS, [Public Sans](https://github.com/uswds/public-sans), dérivée de [Libre Franklin](https://github.com/googlefonts/Libre-Franklin) ; IBM, [Plex Mono](https://github.com/IBM/plex). Licence SIL OFL, fichiers et licences dans `assets/fonts/`.
 - M. Bostock et al., [D3 v7.9.0](https://d3js.org), licence ISC, copie dans `assets/vendor/`.
 - GitHub, [GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits) : site publié limité à 1 Go.
 - MDN, [HTMLCanvasElement.captureStream()](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/captureStream) et [MediaRecorder](https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder) : export vidéo sans bibliothèque.
