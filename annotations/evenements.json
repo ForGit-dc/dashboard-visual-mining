@@ -1,0 +1,205 @@
+{
+  "_lisez_moi": "Événements datés mis en regard des pics de clusters. Règle : chaque entrée a au moins une source ouverte et relue (date de consultation : 15/10/2026). Pas de source, pas d'annotation. Les pics restés sans explication sourcée ne sont pas annotés ; ils sont listés dans LIMITES.md.",
+  "evenements": [
+    {
+      "id": "mobilisation-15",
+      "date": "2026-09-15",
+      "titre": "Journée de mobilisation intersectorielle",
+      "texte": "Grèves et rassemblements dans la santé, l'énergie, la police, l'enseignement supérieur et chez les étudiants, à l'appel notamment de la CGT.",
+      "clusters": [
+        59
+      ],
+      "sources": [
+        {
+          "editeur": "France 3 Occitanie",
+          "titre": "Étudiants, policiers, salariés du secteur de la santé : grève et journée de mobilisation, à quoi s'attendre ce mardi ?",
+          "date": "2026-09-14",
+          "url": "https://france3-regions.franceinfo.fr/occitanie/herault/montpellier/etudiants-policiers-salaries-du-secteur-de-la-sante-greve-et-journee-de-mobilisation-a-quoi-s-attendre-ce-mardi-3416861.html"
+        }
+      ]
+    },
+    {
+      "id": "gazole-18",
+      "date": "2026-09-18",
+      "titre": "Record historique du gazole : 2,39 € le litre",
+      "texte": "Moyenne nationale relevée par Prix-carburants.gouv.fr, au-dessus du précédent record d'avril 2026, dans le contexte de la guerre en Iran.",
+      "clusters": [
+        19
+      ],
+      "sources": [
+        {
+          "editeur": "L'EnerGeek (d'après l'AFP)",
+          "titre": "Carburant : le prix du gazole atteint un record historique",
+          "date": "2026-09-18",
+          "url": "https://lenergeek.com/2026/09/18/carburant-prix-gazole-atteint-record/"
+        }
+      ]
+    },
+    {
+      "id": "permis-de-tuer-20",
+      "date": "2026-09-20",
+      "titre": "Marches contre la loi dite « permis de tuer »",
+      "texte": "Manifestations contre la présomption de légitime défense des forces de l'ordre : plus de 20 000 personnes à Paris selon la préfecture.",
+      "clusters": [
+        59
+      ],
+      "sources": [
+        {
+          "editeur": "franceinfo",
+          "titre": "« Non au permis de tuer » : des manifestations en France contre la proposition de loi sur la présomption de légitime défense pour les forces de l'ordre",
+          "date": "2026-09-21",
+          "url": "https://www.franceinfo.fr/faits-divers/police/non-au-permis-de-tuer-des-manifestations-en-france-contre-la-proposition-de-loi-sur-la-presomption-de-legitime-defense-pour-les-forces-de-l-ordre_8202626.html"
+        }
+      ]
+    },
+    {
+      "id": "onu-22",
+      "date": "2026-09-22",
+      "titre": "Assemblée générale de l'ONU : dernier discours d'Emmanuel Macron",
+      "texte": "Ouverture du débat général à New York ; Donald Trump et Emmanuel Macron s'expriment le même jour.",
+      "clusters": [
+        12,
+        46,
+        22
+      ],
+      "sources": [
+        {
+          "editeur": "France 24",
+          "titre": "À l'Assemblée générale de l'ONU, Macron dénonce « un spectacle qui nous fait honte à tous » à Gaza",
+          "date": "2026-09-22",
+          "url": "https://www.france24.com/fr/am%C3%A9riques/20260922-assembl%C3%A9e-g%C3%A9n%C3%A9rale-onu-en-direct-ouverture-guterres-trump-lula-erdogan-macron-takaichi-burnham-zelensky-moyen-orient-ukraine"
+        }
+      ]
+    },
+    {
+      "id": "harkis-25",
+      "date": "2026-09-25",
+      "titre": "Journée nationale d'hommage aux harkis",
+      "texte": "Cérémonie de ravivage de la flamme à l'Arc de Triomphe, et cérémonies locales devant les monuments aux morts.",
+      "clusters": [
+        62
+      ],
+      "sources": [
+        {
+          "editeur": "Élysée",
+          "titre": "Cérémonie de ravivage de la flamme à l'occasion de la Journée nationale d'hommage aux harkis",
+          "date": "2026-09-25",
+          "url": "https://www.elysee.fr/emmanuel-macron/2026/09/25/ceremonie-de-ravivage-de-la-flamme-a-loccasion-de-la-journee-nationale-dhommage-aux-harkis-aux-moghaznis-et-aux-personnels-des-formations-suppletives-et-assimiles"
+        }
+      ]
+    },
+    {
+      "id": "pape-25",
+      "date": "2026-09-25",
+      "titre": "Le pape Léon XIV arrive à Paris",
+      "texte": "Arrivée à Orly, Élysée, UNESCO, traversée de Paris, vêpres à Notre-Dame, veillée au Stade de France.",
+      "clusters": [
+        4,
+        13,
+        14
+      ],
+      "sources": [
+        {
+          "editeur": "Conférence des évêques de France, site du voyage apostolique",
+          "titre": "Le pape Léon XIV à Paris, 25 et 26 septembre 2026",
+          "date": "2026-09",
+          "url": "https://www.pape-france.fr/le-voyage/paris/"
+        }
+      ]
+    },
+    {
+      "id": "pape-26",
+      "date": "2026-09-26",
+      "titre": "Messe place de la Concorde, puis départ pour Lourdes",
+      "texte": "Messe en plein air sur la place de la Concorde et les Champs-Élysées ; le pape rejoint Lourdes le soir.",
+      "clusters": [
+        14,
+        4,
+        13
+      ],
+      "sources": [
+        {
+          "editeur": "Conférence des évêques de France, site du voyage apostolique",
+          "titre": "Le pape Léon XIV à Paris, 25 et 26 septembre 2026",
+          "date": "2026-09",
+          "url": "https://www.pape-france.fr/le-voyage/paris/"
+        }
+      ]
+    },
+    {
+      "id": "climat-26",
+      "date": "2026-09-26",
+      "titre": "Marches pour le climat, le vivant, la paix et la justice sociale",
+      "texte": "Plus de 260 rassemblements annoncés en France.",
+      "clusters": [
+        59
+      ],
+      "sources": [
+        {
+          "editeur": "Reporterre",
+          "titre": "Marches climat du 26 septembre : la carte des manifestations près de chez vous",
+          "date": "2026-09-25",
+          "url": "https://reporterre.net/Marches-climat-du-26-septembre-la-carte-des-manifestations-pres-de-chez-vous"
+        }
+      ]
+    },
+    {
+      "id": "senatoriales-27",
+      "date": "2026-09-27",
+      "titre": "Élections sénatoriales",
+      "texte": "Renouvellement de la série 1 du Sénat par les grands électeurs ; le RN obtient pour la première fois un groupe.",
+      "clusters": [
+        53
+      ],
+      "sources": [
+        {
+          "editeur": "franceinfo",
+          "titre": "Résultats des élections sénatoriales 2026 : le RN réussit à constituer un groupe au Sénat pour la première fois de son histoire",
+          "date": "2026-09-27",
+          "url": "https://www.franceinfo.fr/elections/senatoriales/resultats-des-elections-senatoriales-2026-le-rn-reussit-a-constituer-un-groupe-au-senat-pour-la-premiere-fois-de-son-histoire_8212448.html"
+        }
+      ]
+    },
+    {
+      "id": "pape-28",
+      "date": "2026-09-28",
+      "titre": "Le pape à Metz, dernière étape du voyage",
+      "texte": "Après Lourdes le 27, où il rencontre les évêques de France, le voyage s'achève à Metz par une rencontre interreligieuse et un discours adressé à l'Europe.",
+      "clusters": [
+        4,
+        13
+      ],
+      "sources": [
+        {
+          "editeur": "Conférence des évêques de France, site du voyage apostolique",
+          "titre": "Voyage apostolique du Saint-Père en France",
+          "date": "2026-09",
+          "url": "https://www.pape-france.fr/"
+        }
+      ]
+    },
+    {
+      "id": "fonction-publique-29",
+      "date": "2026-09-29",
+      "titre": "Grève de la fonction publique contre le gel du point d'indice",
+      "texte": "Appel de l'intersyndicale (CGT, FO, CFDT, UNSA, FSU, Solidaires, CFE-CGC, FA-FP) dans les trois versants de la fonction publique.",
+      "clusters": [
+        59
+      ],
+      "sources": [
+        {
+          "editeur": "LCP",
+          "titre": "Grève du 29 septembre : pourquoi les fonctionnaires réclament une hausse des salaires",
+          "date": "2026-09-29",
+          "url": "https://lcp.fr/actualites/greve-du-29-septembre-pourquoi-les-fonctionnaires-reclament-une-hausse-des-salaires"
+        },
+        {
+          "editeur": "CFDT (préavis de grève)",
+          "titre": "Mobilisation du 29 septembre 2026 : le préavis de grève",
+          "date": "2026-08-31",
+          "url": "https://www.cfdt-ufetam.org/mobilisation-du-29-septembre-2026-le-preavis-de-greve/"
+        }
+      ]
+    }
+  ]
+}

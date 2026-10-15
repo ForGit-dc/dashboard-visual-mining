@@ -1,0 +1,10 @@
+# Les fichiers texte sont stockés en LF, y compris depuis Windows.
+* text=auto eol=lf
+
+# Binaires : aucune conversion de fin de ligne, pas de diff texte.
+*.bin   binary
+*.webp  binary
+*.jpg   binary
+*.jpeg  binary
+*.png   binary
+*.woff2 binary

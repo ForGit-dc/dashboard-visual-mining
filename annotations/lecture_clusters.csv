@@ -1,0 +1,65 @@
+cluster_id,logique,ce_qu_on_voit,note_sur_le_label
+0,genre,"Cartes : géopolitique, défense européenne, mais aussi radars du périphérique",
+1,sujet,"Photos d'action de matchs, sans texte incrusté",
+2,sujet,"Sport individuel en photo : cyclisme, judo, surf, canoë",
+3,gabarit,"Cartes orange d'Africa Intelligence, titre seul ou photo sur fond sombre","Un éditeur plus qu'un sujet : les 21 images de l'échantillon sont des cartes Africa Intelligence, et le flux s'arrête chaque week-end."
+4,genre,"Vignettes de presse titrées sur la visite du pape : coût, trajets, polémiques","Même événement que 13 et 14, séparé par le format : ici le texte incrusté domine."
+5,gabarit,"Vignettes sport de la presse régionale : handball, volley, basket",
+6,genre,"Vignettes titrées sur le football : Ballon d'or, Ligue 1, transferts",
+7,genre,"Unes de quotidiens et couvertures de magazines",
+8,genre,"Dessins de presse et caricatures politiques signés",
+9,gabarit,"Cartes Hérault Tribune : photo, bandeau, titre","21 des 22 images de l'échantillon portent le bandeau Hérault Tribune : le cluster capte la charte d'un éditeur, pas un sujet."
+10,genre,"Captures de plateaux d'information, avec leurs bandeaux",
+11,gabarit,"Cartes Imaz Press : photo, catégorie, titre","Le cluster capte la charte graphique d'un éditeur réunionnais."
+12,sujet,"Emmanuel Macron et chefs d'État : accolades, pupitres, tribune de l'ONU",
+13,sujet,"Portraits photographiques du pape Léon XIV, salut de la main","Même événement que 4 et 14, séparé par le format : ici le portrait seul."
+14,sujet,"Scènes religieuses : célébrations, processions, Lourdes, moines devant la tour Eiffel","Même événement que 4 et 13, séparé par le format : ici la scène et la foule."
+15,genre,"Dessins animés, jeux vidéo et animation des années 1980 à 2000",
+16,genre,"Graphiques en anglais d'institutions internationales (OCDE, VoxEU)","Le label dit « sondages » : ce sont surtout des graphiques économiques d'institutions, publiés par des Officials."
+17,genre,"Graphiques, courbes et tableaux, surtout en français",
+18,gabarit,"Vignettes sport à bandeau rouge de la presse régionale",
+19,sujet,"Pompes à essence et vignettes sur les prix à la pompe",
+20,genre,"Affiches d'événements de think tanks anglophones","Le label dit « analyses politiques » : ce sont des annonces de conférences (OCDE, IISS, Chatham House) en anglais."
+21,sujet,"Vignettes sur Vladimir Poutine et Volodymyr Zelensky",
+22,sujet,"Vignettes et citations de Donald Trump : Venezuela, Iran, Canada","Le label dit « États-Unis–Chine » : le point commun visible est Donald Trump, pas la Chine."
+23,sujet,"Donald Trump photographié au pupitre",
+24,genre,"Visuels du réseau diplomatique français, souvent en langue étrangère",
+25,sujet,"Enseignes, logos de marques et smartphones",
+26,genre,"Cartons « je suis l'invité de… » : chaîne, horaire, portrait","Le label dit « chaînes d'information » : ce sont des élus qui annoncent leurs passages à l'antenne, d'où la dominante Officials."
+27,genre,"Communiqués et lettres officielles, scannés ou photographiés",
+28,sujet,"Drapeaux et chefs d'État, souvent en photomontage",
+29,genre,"Peinture ancienne et gravures : religion, batailles, mythologie","Le label dit « biblique » : le cluster rassemble plus largement la peinture ancienne, utilisée comme répertoire militant (81 % Vectors)."
+30,sujet,"Hommes politiques en portrait, en studio radio ou sur plateau",
+31,sujet,"Interventions de police et de gendarmerie, scènes de faits divers",
+32,sujet,"Militaires à l'exercice, véhicules, hélicoptères","Le label dit « aéronautique » : les images les plus centrales montrent surtout des fantassins sur le terrain."
+33,sujet,"Destructions, ruines, fumées",
+34,genre,"Affiches d'événements locaux : réunion de rentrée, fête, marché, débat",
+35,sujet,"Photos de tournage et de casting de séries et de films",
+36,genre,"Visuels d'émissions et d'interviews : titre, nom, portrait",
+37,sujet,"Images de fiction : séries et films",
+38,sujet,"Animaux domestiques et d'élevage",
+39,sujet,"Paysages, vues aériennes, plages, bâtiments",
+40,genre,"Captures d'écran de tweets, d'articles et de bandeaux d'info","Le label dit « polémiques » : visuellement, c'est le cluster de la capture d'écran, le geste type de la reprise."
+41,sujet,"Musiciens sur scène et portraits d'artistes",
+42,sujet,"Portraits de femmes, en studio ou en situation",
+43,genre,"Couvertures de livres d'histoire et d'essais",
+44,genre,"Vignettes « Alerte info » et titres de dernière minute",
+45,genre,"Miniatures vidéo à gros titres capitales (web TV, YouTube)","Le label dit « personnalités politiques » : le format commun est la miniature vidéo racoleuse."
+46,sujet,"Vignettes et cartes-citations sur Emmanuel Macron",
+47,gabarit,"Cartes Gala : portrait et titre en blanc","Presque tout l'échantillon porte le logo Gala : une charte d'éditeur, pas un sujet."
+48,gabarit,"Portraits de personnalités titrés, presse féminine et people",
+49,genre,"Illustrations conceptuelles : billets, clés, schémas, abstractions",
+50,sujet,"Commerces, rayons, produits, plats",
+51,genre,"Photos d'illustration santé : tension, mains, migraine, perfusion",
+52,sujet,"Meetings et pupitres politiques, RN et membres du gouvernement","Le label dit « dirigeants européens » : les images les plus centrales sont des meetings et discours en France."
+53,sujet,"Vignettes sur les sénatoriales et archives en noir et blanc",
+54,genre,"Cartes-citations et portraits politiques titrés",
+55,genre,"Visuels-textes militants : tracts syndicaux, slogans, mails types","Le label dit « débats européens » : ce sont des visuels où le texte est l'image, publiés surtout par des syndicats et des partis."
+56,gabarit,"Vignettes CNews : logo, photo, titre","Les 32 images de l'échantillon sont des vignettes CNews : une charte d'éditeur, pas un sujet."
+57,gabarit,"Cartes conseils de Marie France et aufeminin : cuisine, jardin, maison","Le label dit « alimentaires » : les cartes couvrent aussi le jardin et la maison."
+58,gabarit,"Vignettes titrées de la presse régionale : faits divers et vie locale","Le plus gros cluster du corpus est d'abord un format : la vignette de presse régionale à bandeau."
+59,sujet,"Cortèges syndicaux, drapeaux, banderoles",
+60,sujet,"Élus en visite : ateliers, cuisines, usines",
+61,sujet,"Réunions autour d'une table, salles de conseil",
+62,sujet,"Monuments aux morts, gerbes, porte-drapeaux",
+63,sujet,"Élus en déplacement, photos de groupe en extérieur",
