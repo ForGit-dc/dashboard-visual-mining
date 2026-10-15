@@ -61,7 +61,7 @@ export default class VueResonance {
             Or l'engagement est celui du post, recopié sur chacune de ses images : un post de quatre images compte quatre fois.
             Et une moyenne suit ses valeurs extrêmes. La médiane par post corrige les deux. Entre Football Européen et Faits Divers,
             elle redonne par coïncidence le même rapport ; pour les autres clusters, l'ordre change.</p>
-          <div id="comparaison"></div>
+          <div id="comparaison" class="defile"></div>
           <p class="reserve">Les engagements mesurent la réaction au post, pas à l'image. Un post à quatre images porte le même chiffre sur ses quatre images ; on ne sait pas laquelle a fait réagir.</p>
         </section>
       </div>`;

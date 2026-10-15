@@ -104,9 +104,9 @@ export default class VueLimites {
           <h3>${enLettres(vide.length).charAt(0).toUpperCase() + enLettres(vide.length).slice(1)} clusters ont une médiane d'au plus un engagement par post : ${entier(imagesVide)} images, ${pct(imagesVide / t.images)} du corpus</h3>
           <p class="chapeau">Une partie mesurable de la production médiatique ne rencontre personne. Ce sont surtout des flux d'éditeurs (gabarits) et des visuels
             de culture populaire publiés en série. Ce n'est pas une limite de la méthode : c'est un résultat. Mais il pèse sur tout classement par volume.</p>
-          <table class="tableau-simple"><thead><tr><th>Cluster</th><th>Logique</th><th class="n">Images</th><th class="n">Médiane</th><th class="n">Posts à 0</th><th>Famille dominante</th></tr></thead>
+          <div class="defile"><table class="tableau-simple"><thead><tr><th>Cluster</th><th>Logique</th><th class="n">Images</th><th class="n">Médiane</th><th class="n">Posts à 0</th><th>Famille dominante</th></tr></thead>
             <tbody>${vide.map((f) => `<tr><td>${html(f.label)}</td><td>${f.logique}</td><td class="n">${entier(f.n)}</td><td class="n">${mediane(f.eng.mediane)}</td><td class="n">${pct(f.eng.part_zero, 0)}</td>
-              <td><span class="fam fam--${FAMILLES[f.dominante]}">${FAMILLES[f.dominante]} ${pct(f.part_dominante, 0)}</span></td></tr>`).join("")}</tbody></table>
+              <td><span class="fam fam--${FAMILLES[f.dominante]}">${FAMILLES[f.dominante]} ${pct(f.part_dominante, 0)}</span></td></tr>`).join("")}</tbody></table></div>
         </section>
 
         <section class="limite">
@@ -125,8 +125,8 @@ export default class VueLimites {
           <h3>${enLettres(notes.length).charAt(0).toUpperCase() + enLettres(notes.length).slice(1)} labels décrivent mal ce que montrent les images</h3>
           <p class="chapeau">Les labels ont été produits automatiquement puis revus. À la lecture des images les plus centrales, certains nomment un sujet que les images ne montrent pas.
             Les labels d'origine sont conservés partout ; la correction est signalée dans la fiche de chaque cluster.</p>
-          <table class="tableau-simple"><thead><tr><th>Label</th><th>Ce que montrent les images</th></tr></thead>
-            <tbody>${notes.map((f) => `<tr><td style="white-space:nowrap"><strong>${html(f.label)}</strong></td><td>${html(f.note.replace(/^Le label dit « [^»]+ » : /, ""))}</td></tr>`).join("")}</tbody></table>
+          <div class="defile"><table class="tableau-simple"><thead><tr><th>Label</th><th>Ce que montrent les images</th></tr></thead>
+            <tbody>${notes.map((f) => `<tr><td style="white-space:nowrap"><strong>${html(f.label)}</strong></td><td>${html(f.note.replace(/^Le label dit « [^»]+ » : /, ""))}</td></tr>`).join("")}</tbody></table></div>
         </section>
 
         <section class="limite">
@@ -147,12 +147,12 @@ export default class VueLimites {
           <span class="limite__num">9 · des pics sans explication</span>
           <h3>${enLettres(nonExpliques.length).charAt(0).toUpperCase() + enLettres(nonExpliques.length).slice(1)} pics marqués ne sont pas annotés : je n'ai pas trouvé de source qui les date</h3>
           <p class="chapeau">Règle suivie : pas de source fiable, pas d'annotation. Quand un événement sourcé tombe quelques jours avant le pic, la correspondance n'est pas forcée.</p>
-          <table class="tableau-simple"><thead><tr><th>Cluster</th><th class="n">Pic</th><th class="n">× médiane</th><th class="n">Au pic</th><th>Événement voisin annoté</th></tr></thead>
+          <div class="defile"><table class="tableau-simple"><thead><tr><th>Cluster</th><th class="n">Pic</th><th class="n">× médiane</th><th class="n">Au pic</th><th>Événement voisin annoté</th></tr></thead>
             <tbody>${nonExpliques.map((f) => {
               const voisins = (evtsParCluster.get(f.id) || []).filter((j) => Math.abs(j - f.pic) <= 4);
               return `<tr><td>${html(f.label)}</td><td class="n">${jourCourt(f.pic)}</td><td class="n">×${decimal(f.pic_sur_mediane, 1)}</td><td class="n">${pct(f.pct_pic / 100, 0)}</td>
                 <td>${voisins.length ? voisins.map((j) => `le ${jourCourt(j)}, ${f.pic - j > 0 ? `${f.pic - j} j avant le pic` : `${j - f.pic} j après`}`).join(", ") : "aucun"}</td></tr>`;
-            }).join("")}</tbody></table>
+            }).join("")}</tbody></table></div>
         </section>
 
         <section class="limite">

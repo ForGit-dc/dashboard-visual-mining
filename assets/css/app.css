@@ -78,6 +78,8 @@ body {
   min-height: 100vh;
   display: grid;
   grid-template-rows: auto auto 1fr;
+  /* minmax(0, 1fr) : un tableau large défile dans son cadre au lieu d'élargir la page */
+  grid-template-columns: minmax(0, 1fr);
 }
 h1, h2, h3, h4 { font-family: var(--serif); font-weight: 500; margin: 0; letter-spacing: -0.005em; }
 p { margin: 0 0 0.6em; }
@@ -146,7 +148,8 @@ kbd {
 .bouton--discret { border-color: var(--filet-fort); font-weight: 500; }
 .lien-bouton { background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; font-size: inherit; }
 
-.segments { display: inline-flex; border: 1px solid var(--filet-fort); border-radius: 2px; }
+.segments { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--filet-fort); border-radius: 2px; }
+.defile { overflow-x: auto; max-width: 100%; }
 .segments button {
   border: 0;
   border-right: 1px solid var(--filet-fort);
@@ -224,6 +227,7 @@ main { min-height: 0; position: relative; outline: none; }
 .colonnes--2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 .colonnes--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .colonnes--2-1 { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+.colonnes--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
 .note-lecture {
   border-left: 2px solid var(--encre);
@@ -708,6 +712,7 @@ body[data-vue="carte"] .parcours { right: calc(var(--panneau) + 16px); bottom: 1
    ========================================================================== */
 @media (max-width: 1100px) {
   :root { --marge: 16px; --panneau: 320px; }
+  .colonnes--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .colonnes--3 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .familles-tetes { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
@@ -725,7 +730,7 @@ body[data-vue="carte"] .parcours { right: calc(var(--panneau) + 16px); bottom: 1
   .frise { grid-template-columns: minmax(0, 1fr); }
   .vue-planches { grid-template-columns: minmax(0, 1fr); }
   .planches__choix { max-height: 220px; border-right: 0; border-bottom: 1px solid var(--filet); }
-  .colonnes--2, .colonnes--3, .colonnes--2-1, .chaine, .avant-apres { grid-template-columns: minmax(0, 1fr); }
+  .colonnes--2, .colonnes--3, .colonnes--2-1, .colonnes--4, .chaine, .avant-apres { grid-template-columns: minmax(0, 1fr); }
   .familles-tetes { grid-template-columns: minmax(0, 1fr); }
   .liste-absences { columns: 1; }
   .visionneuse__corps { grid-template-columns: minmax(0, 1fr); grid-template-rows: 60vh auto; }

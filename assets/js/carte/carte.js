@@ -271,8 +271,8 @@ export class VueCarte {
     ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
     ctx.clearRect(0, 0, this.largeur, this.hauteur);
     this.dessineVignettes(ctx);
-    if (v.noms) this.dessineRegions(ctx);
-    if (v.noms) this.dessineNoms(ctx);
+    const regions = v.noms ? this.dessineRegions(ctx) : [];
+    if (v.noms) this.dessineNoms(ctx, regions);
     this.dernierRendu = performance.now() - t0;
     // Mesures lues par la recette de performance (voir README, « Performances »).
     const m = (window.__mesures ??= {});
@@ -291,25 +291,31 @@ export class VueCarte {
    */
   dessineRegions(ctx) {
     const z = this.vue.k / this.k0;
-    if (z > 1.8 || etat.get("iso").length) return;
+    if (z > 1.8 || etat.get("iso").length) return [];
     const regions = this.d.meta.continents || [];
+    const rectangles = [];
     ctx.save();
     ctx.textAlign = "center";
     ctx.textBaseline = "alphabetic";
-    ctx.font = `600 11px "Public Sans", sans-serif`;
     for (const r of regions) {
       const [x, y] = this.versEcran(r.x, r.y);
       const texte = r.nom.toUpperCase().split("").join(" ");
+      ctx.font = `600 11px "Public Sans", sans-serif`;
+      const l1 = ctx.measureText(texte).width;
       ctx.fillStyle = "rgba(111, 105, 93, 0.9)";
       ctx.fillText(texte, x, y);
       ctx.font = `italic 400 12.5px Newsreader, Georgia, serif`;
+      const l2 = ctx.measureText(r.detail).width;
       ctx.fillText(r.detail, x, y + 16);
-      ctx.font = `600 11px "Public Sans", sans-serif`;
+      const l = Math.max(l1, l2);
+      // Rectangle occupé, transmis au placement des noms de clusters comme obstacle.
+      rectangles.push({ x: x - l / 2, y: y - 12, w: l, h: 32 });
     }
     ctx.restore();
+    return rectangles;
   }
 
-  dessineNoms(ctx) {
+  dessineNoms(ctx, regions = []) {
     const v = etat.valeurs;
     const cumul = v.t === null ? null : Math.floor(v.t / 1440);
     const candidats = [];
@@ -348,6 +354,7 @@ export class VueCarte {
       obstacles.push({ x: re.left - rz.left, y: re.top - rz.top, w: re.width, h: re.height });
     }
     obstacles.push({ x: this.largeur - 48, y: 6, w: 44, h: 100 }); // boutons de zoom
+    obstacles.push(...regions);
     this.nomsPoses = etiquettes.place(ctx, candidats, this.largeur, this.hauteur, { obstacles });
     etiquettes.dessine(ctx, this.nomsPoses);
   }

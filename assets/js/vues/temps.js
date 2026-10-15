@@ -34,13 +34,13 @@ export default class VueTemps {
         <section class="bloc">
           <h3>Le volume quotidien, par régime</h3>
           <p class="chapeau">Images publiées chaque jour par les clusters de chaque régime. Échelles indépendantes : comparez les formes, pas les hauteurs. Bandes grises : week-ends.</p>
-          <div class="colonnes" style="grid-template-columns:repeat(4,minmax(0,1fr))" id="regimes"></div>
+          <div class="colonnes colonnes--4" id="regimes"></div>
         </section>
 
         <section class="bloc">
           <h3>Les 64 clusters, jour par jour</h3>
           <p class="chapeau">Chaque crête est un cluster, rapporté à son propre maximum : on compare des rythmes, pas des volumes. Survolez une crête pour les valeurs, cliquez pour le détail.</p>
-          <div class="graphe" id="cretes"></div>
+          <div class="graphe defile" id="cretes"></div>
           <p class="source-graphe">Lecture : la crête de Visite Papale est plate tout le mois puis monte d'un coup le 25. Jours en abscisse, du 1<sup>er</sup> au 29 septembre 2026.</p>
         </section>
 
