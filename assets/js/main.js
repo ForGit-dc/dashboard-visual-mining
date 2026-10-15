@@ -30,6 +30,7 @@ function navigue(vue, patch = {}) {
 function hauteurEntete() {
   const h = document.querySelector(".bandeau").offsetHeight + document.querySelector(".onglets").offsetHeight;
   document.documentElement.style.setProperty("--hauteur-haut", `${h}px`);
+  document.documentElement.style.setProperty("--hauteur-onglets", `${document.querySelector(".onglets").offsetHeight}px`);
 }
 
 function afficheErreur(e) {
@@ -126,6 +127,19 @@ async function lanceParcours(etape = 0) {
   if (!vues.parcours) vues.parcours = new Parcours(donnees, navigue, () => vues.carte);
   vues.parcours.ouvre(etape);
 }
+
+// Une vignette absente ou en erreur est remplacée par un cadre explicite, au
+// lieu de l'icône d'image cassée du navigateur.
+document.addEventListener("error", (e) => {
+  const img = e.target;
+  if (!(img instanceof HTMLImageElement) || !img.src.includes("vignettes/") || img.dataset.echec) return;
+  img.dataset.echec = "1";
+  const repli = document.createElement("span");
+  repli.className = "image-absente";
+  repli.textContent = "image indisponible";
+  repli.title = img.src.split("/").slice(-2).join("/");
+  img.replaceWith(repli);
+}, true);
 
 async function demarre() {
   const barre = document.getElementById("chargement-barre");

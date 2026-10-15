@@ -192,7 +192,8 @@ def quantiles(valeurs, qs):
 def entropie_normalisee(parts):
     p = np.array([x for x in parts if x > 0], dtype=float)
     p = p / p.sum()
-    return float(-(p * np.log(p)).sum() / math.log(len(FAMILLES)))
+    # abs() : une seule famille donne -0.0, qui s'afficherait « −0,00 »
+    return abs(float(-(p * np.log(p)).sum() / math.log(len(FAMILLES))))
 
 
 def regime(serie, pic_sur_mediane, pct_pic, ratio_weekend):

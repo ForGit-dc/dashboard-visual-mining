@@ -20,15 +20,15 @@ Les 65 229 images viennent de **54 542 posts** : 4 921 posts portent 2 à 4 imag
 **6 090 581**. L'écart (+37,8 %) n'est pas uniforme : il frappe les clusters
 où l'on publie en albums.
 
-**b. `eng_par_image` est une moyenne, et c'est elle qui fabrique le « facteur 42 ».**
+**b. `eng_par_image` est une moyenne gonflée par les posts à plusieurs images.**
 Football Européen affiche 1 103 engagements par image parce qu'un seul post de
 4 images (132 538 engagements) y est compté 4 fois : 530 152 engagements sur
 1 024 341. Dédoublonné, le cluster pèse 414 288. Sa médiane par post est de
-**42**, celle de Faits Divers de **1**. L'écart reste énorme, mais ce n'est pas
-le même chiffre ni le même argument : la résonance de Football Européen tient à
-une poignée de posts viraux (le premier pèse 32 % du cluster), pas à
-l'ensemble du cluster. Le dashboard n'affiche donc **que des médianes par post**,
-avec le 9e décile et la part du premier post.
+**42**, celle de Faits Divers de **1** : le facteur 42 du brief survit à la
+correction, par coïncidence. Mais il ne dit plus la même chose : la résonance de
+Football Européen tient à une poignée de posts viraux (le premier pèse 32 % du
+cluster), et pour d'autres clusters l'ordre change. Le dashboard n'affiche donc
+**que des médianes par post**, avec le 9e décile et la part du premier post.
 
 Classement par médiane par post, en tête : Sommet Diplomatique (56),
 Statistiques et Graphiques (53), Polémiques Sociétales (49), Aéronautique

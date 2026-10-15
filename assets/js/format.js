@@ -10,6 +10,7 @@ export function entier(v) {
 }
 
 export function decimal(v, chiffres = 1) {
+  if (Object.is(v, -0) || Math.abs(v) < 0.5 * 10 ** -chiffres) v = 0;
   if (!decimaux[chiffres]) {
     decimaux[chiffres] = new Intl.NumberFormat("fr-FR", {
       minimumFractionDigits: chiffres,
@@ -117,4 +118,12 @@ export function html(chaine) {
 /** Comparaison insensible aux accents et à la casse, pour la recherche. */
 export function plie(chaine) {
   return String(chaine).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+}
+
+const LETTRES = ["zéro", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix",
+  "onze", "douze", "treize", "quatorze", "quinze", "seize"];
+
+/** Petits nombres en lettres dans les titres, comme le veut l'usage de la presse. */
+export function enLettres(n) {
+  return Number.isInteger(n) && n >= 0 && n < LETTRES.length ? LETTRES[n] : entier(n);
 }
