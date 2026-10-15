@@ -65,7 +65,7 @@ async function affiche() {
         <dt>Document</dt><dd class="mono">${e.doc}</dd>
       </dl>
       <p class="lien-post" style="margin-bottom:14px"><span style="color:#a8a194">Lien vers le post en cours de chargement…</span></p>
-      ${copies.length ? `<p><strong>Quasi-doublon.</strong> La même image, à quelques pixels près, apparaît dans ${accord(copies.length, "autre post")} de l'échantillon :</p>
+      ${copies.length ? `<p><strong>Quasi-doublon.</strong> La même image, à quelques pixels près, apparaît dans ${accord(copies.length, "autre post", "autres posts")} de l'échantillon :</p>
         <div class="mini-planche" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px">${copies.slice(0, 8).map((c) =>
           `<button type="button" data-rang="${c.rang}" title="${html(minuteLongue(p.minute[c.point]))}"><img src="${donnees.vignette(c)}" alt="" loading="lazy"></button>`).join("")}</div>` : ""}
       <p style="color:#a8a194;font-size:11px">← → pour naviguer · Échap pour fermer</p>

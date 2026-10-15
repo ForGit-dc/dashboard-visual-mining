@@ -29,6 +29,7 @@ const SCHEMA = {
   avecBruit: ["ab", "bool", false],
   focus:     ["f", "entier", null],        // cluster détaillé dans la vue Temps
   triMatrice:["tm", "texte", "Vectors"],
+  groupe:    ["g", "liste", [4, 13, 14]],  // clusters regroupés à la main (vue Limites)
   parcours:  ["etape", "entier", null],
 };
 

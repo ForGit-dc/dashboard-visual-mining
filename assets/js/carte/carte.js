@@ -69,7 +69,12 @@ export class VueCarte {
     });
     etat.ecoute(["noms", "trainee"], () => { this.majOutils(); this.demandeRendu(); });
     etat.ecoute(["sel"], () => this.majPanneau());
-    etat.ecoute(["t"], () => { this.majEvenement(); this.demandeRendu(); });
+    etat.ecoute(["t"], () => {
+      this.majEvenement();
+      this.demandeRendu();
+      // Pendant la lecture, le compteur suit au plus quatre fois par seconde.
+      if (!this.compteur) this.compteur = setTimeout(() => { this.compteur = null; this.majCompte(); }, 250);
+    });
     etat.ecoute(["cadrage"], (_, v) => {
       if (this.ecritureCadrage) return;
       if (v.cadrage) this.anime(this.depuisCadrage(v.cadrage));
@@ -127,30 +132,19 @@ export class VueCarte {
     this.el.querySelector("#curseur-certitude").value = v.certitude;
     this.el.querySelector("#valeur-certitude").textContent = decimal(v.certitude, 2);
     this.el.querySelector("#titre-carte").textContent = TITRES[v.couleur] ?? TITRES.cluster;
-    const visibles = this.compteVisibles();
-    this.el.querySelector("#compte-carte").textContent = `${entier(visibles)} images affichées sur ${entier(this.d.n)}`;
+    this.majCompte();
   }
 
+  /** Nombre de points réellement dessinés : bruit, certitude, isolement et date compris. */
   compteVisibles() {
-    const v = etat.valeurs;
     let n = 0;
-    for (const f of this.d.fiches) {
-      if (f.id === -1 && !v.bruit) continue;
-      if (v.iso.length && !v.iso.includes(f.id)) continue;
-      n += f.n;
-    }
-    if (v.certitude > 0) {
-      const seuil = v.certitude * 255 - 0.03;
-      n = 0;
-      const p = this.d.p;
-      for (let i = 0; i < this.d.n; i++) {
-        const c = p.cluster[i];
-        if (c === -1) { if (v.bruit && !v.iso.length) n++; continue; }
-        if (v.iso.length && !v.iso.includes(c)) continue;
-        if (p.prob[i] >= seuil) n++;
-      }
-    }
+    for (let i = 0; i < this.d.n; i++) if (this.estVisible(i)) n++;
     return n;
+  }
+
+  majCompte() {
+    const el = this.el.querySelector("#compte-carte");
+    if (el) el.textContent = `${entier(this.compteVisibles())} images affichées sur ${entier(this.d.n)}`;
   }
 
   // ------------------------------------------------------------------ Couleurs et visibilité

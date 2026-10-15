@@ -22,6 +22,7 @@ const MODULES = {
 const vues = {};
 let donnees = null;
 let active = null;
+let parcours = null;
 
 function navigue(vue, patch = {}) {
   etat.change({ vue, ...patch }, { historique: true });
@@ -95,6 +96,7 @@ async function active_(nom) {
     }
   }
   active = nom;
+  document.body.dataset.vue = nom;
   vues[nom].el.classList.add("active");
   hauteurEntete();
   vues[nom].active?.();
@@ -119,13 +121,14 @@ function clavier(e) {
   }
   if (e.key === "l" || e.key === "L") { copie(etat.lienAbsolu(), "Lien copié : il rouvre exactement cet écran."); e.preventDefault(); return; }
   if (e.key === "p" || e.key === "P") { lanceParcours(); e.preventDefault(); return; }
+  if (e.key === "Escape" && parcours?.ouvert) { parcours.ferme(); e.preventDefault(); return; }
   if (vues[active]?.clavier?.(e)) e.preventDefault();
 }
 
 async function lanceParcours(etape = 0) {
   const { Parcours } = await import("./vues/parcours.js");
-  if (!vues.parcours) vues.parcours = new Parcours(donnees, navigue, () => vues.carte);
-  vues.parcours.ouvre(etape);
+  if (!parcours) parcours = new Parcours(donnees, navigue, () => vues.carte);
+  parcours.ouvre(etape);
 }
 
 // Une vignette absente ou en erreur est remplacée par un cadre explicite, au

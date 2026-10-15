@@ -479,7 +479,7 @@ main { min-height: 0; position: relative; outline: none; }
 /* ==========================================================================
    Planches contact
    ========================================================================== */
-.vue-planches { grid-template-columns: 300px minmax(0, 1fr); }
+.vue-planches { grid-template-columns: 300px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
 .planches__choix { border-right: 1px solid var(--filet); overflow-y: auto; min-height: 0; }
 .planches__contenu { overflow-y: auto; min-height: 0; padding: 18px var(--marge) 48px; }
 .planche__outils { display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: center; margin: 10px 0 14px; font-size: var(--t-s); }
@@ -694,6 +694,7 @@ table.donnees th .unite { display: block; font-weight: 400; color: var(--encre-3
   z-index: 70;
   padding: 14px 18px 14px;
 }
+body[data-vue="carte"] .parcours { right: calc(var(--panneau) + 16px); bottom: 112px; }
 .parcours__etape { font: 600 var(--t-xs)/1 var(--sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--encre-3); display: flex; justify-content: space-between; }
 .parcours h3 { font-size: 21px; line-height: 1.2; margin: 8px 0 8px; }
 .parcours p { font-size: var(--t-s); color: var(--encre-2); }

@@ -63,9 +63,13 @@ void main() {
     }
   }
 
-  if (u_isole > 0.5 && drapeau.r < 0.5) {
-    alpha *= 0.12;
-    rgb = u_gris;
+  if (u_isole > 0.5) {
+    if (drapeau.r < 0.5) {
+      alpha *= 0.12;
+      rgb = u_gris;
+    } else {
+      taille *= 1.45;   // les clusters isolés ressortent même vus de loin
+    }
   }
   if (drapeau.g > 0.5) {
     taille *= 1.3;

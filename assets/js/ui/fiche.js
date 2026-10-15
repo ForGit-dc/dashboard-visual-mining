@@ -67,9 +67,9 @@ export function construitFiche(donnees, f, actions) {
     </section>
 
     <section class="fiche__section">
-      <h4>Images par jour, 1<sup>er</sup>–29 septembre</h4>
+      <h4>Images par jour</h4>
       ${courbe(f.serie, { largeur: 330, hauteur: 46, jours: evts.map((e) => e.jour), weekend: true })}
-      <p class="petit discret" style="margin:4px 0 0">Bandes grises : week-ends. Point : jour de pic.${evts.length ? " Traits : événements sourcés." : ""}</p>
+      <p class="petit discret" style="margin:4px 0 0">Du 1<sup>er</sup> au 29 septembre. Bandes grises : week-ends. Point : jour de pic.${evts.length ? " Traits : événements sourcés." : ""}</p>
       ${evts.length ? `<ul class="liste-sources" style="margin-top:6px">${evts.map((e) => `
         <li><span class="date">${jourCourt(e.jour)}</span>
           <span>${html(e.titre)}. <a href="${html(e.sources[0].url)}" target="_blank" rel="noopener">${html(e.sources[0].editeur)} ↗</a></span></li>`).join("")}</ul>` : ""}
@@ -79,7 +79,7 @@ export function construitFiche(donnees, f, actions) {
       <h4>Les ${premieres.length} images les plus centrales</h4>
       <div class="mini-planche">${premieres.map((e, k) => `
         <button type="button" data-k="${k}" aria-label="Agrandir l'image ${k + 1}"><img src="${donnees.vignette(e)}" alt="" loading="lazy" decoding="async" width="110" height="110"></button>`).join("")}</div>
-      <p class="petit discret" style="margin-top:6px">${accord(f.echantillon.length, "image locale")} sur ${entier(f.n)} : les 10 % les plus certaines du cluster.</p>
+      <p class="petit discret" style="margin-top:6px">${accord(f.echantillon.length, "image locale", "images locales")} sur ${entier(f.n)} : les 10 % les plus certaines du cluster.</p>
     </section>
 
     ${f.eng.part_premier >= 0.25 ? `<p class="note-lecture">Un seul post pèse <strong>${pct(f.eng.part_premier, 0)}</strong> des engagements de ce cluster (${entier(f.eng.max)}). Lisez la médiane, pas le total.</p>` : ""}
