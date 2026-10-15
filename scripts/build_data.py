@@ -451,6 +451,31 @@ def main():
                               float(np.quantile(xs[coeur], 0.98)), float(np.quantile(ys[coeur], 0.98))]
         fiches.append(fiche)
 
+    # ----- les deux continents de la carte : on coupe au plus grand écart
+    # horizontal entre les ancres de clusters. La lecture des images (annotations)
+    # dit ce qu'il y a de chaque côté.
+    ancres_x = sorted((f["ancre"][0], f["id"]) for f in fiches if f["id"] >= 0)
+    ecarts = [(ancres_x[i + 1][0] - ancres_x[i][0], (ancres_x[i + 1][0] + ancres_x[i][0]) / 2) for i in range(len(ancres_x) - 1)]
+    coupure = max(ecarts)[1]
+    continents = []
+    for nom, detail, cote in [("Photographies", "scènes, portraits, paysages", lambda x: x < coupure),
+                              ("Images faites de texte", "vignettes titrées, captures, cartons", lambda x: x >= coupure)]:
+        membres = [f for f in fiches if f["id"] >= 0 and cote(f["ancre"][0])]
+        images = sum(f["n"] for f in membres)
+        logiques = {}
+        for f in membres:
+            logiques[f["logique"]] = logiques.get(f["logique"], 0) + f["n"]
+        continents.append({
+            "nom": nom,
+            "detail": f"{detail} · {len(membres)} clusters",
+            "x": float(np.median([f["ancre"][0] for f in membres])),
+            "y": float(max(f["cadre"][3] for f in membres)) + 0.6,
+            "clusters": [f["id"] for f in membres],
+            "images": images,
+            "logiques": {k: v / images for k, v in logiques.items()},
+            "familles": [sum(f["familles"][k] for f in membres) / images for k in range(4)],
+        })
+
     ids = list(range(64))
     couleurs, contact, pire_ecart = coloration(ids, xs, ys, cl)
     for fiche in fiches:
@@ -577,6 +602,7 @@ def main():
                         "seuil_doublon_bits": SEUIL_DOUBLON},
         "palette_clusters": PALETTE_CLUSTERS,
         "coloration_pire_ecart": pire_ecart,
+        "continents": continents,
     }
 
     def ecrit(nom, objet):
@@ -592,11 +618,15 @@ def main():
             return {k: arrondi(v) for k, v in o.items()}
         return o
 
-    ecrit("meta.json", arrondi(meta))
     ecrit("clusters.json", arrondi(fiches))
     ecrit("echantillon.json", lignes_ech)
     ecrit("originaux.json", originaux)
     ecrit("evenements.json", evenements)
+    # Tailles exactes : la barre de chargement s'en sert quand le serveur
+    # compresse les réponses et n'envoie pas de Content-Length fiable.
+    meta["fichiers"] = {nom: os.path.getsize(os.path.join(SORTIE, nom)) for nom in
+                        ["points.bin", "posts.bin", "clusters.json", "echantillon.json", "evenements.json"]}
+    ecrit("meta.json", arrondi(meta))
 
     t = meta["totaux"]
     print(f"{t['images']} images, {t['posts']} posts ({t['posts_multi_images']} à plusieurs images)")

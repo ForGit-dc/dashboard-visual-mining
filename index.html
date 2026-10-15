@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SPINE · Septembre 2026 en 65 229 images</title>
+  <meta name="description" content="Clustering visuel de 65 229 images publiées sur X par quatre familles d'acteurs français, du 1er au 29 septembre 2026. Analyse 691, SPINE France, opsci.ai.">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="data/points.bin" as="fetch" type="application/octet-stream" crossorigin>
+  <link rel="preload" href="assets/fonts/libre-franklin-normal-300-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/newsreader-normal-300-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+  <a class="evitement" href="#vue">Aller au contenu</a>
+
+  <header class="bandeau">
+    <div class="bandeau__titre">
+      <p class="surtitre">SPINE France · analyse 691 · Topic-mining visuel · <a href="https://opsci.ai" rel="noopener">opsci.ai</a></p>
+      <h1>Septembre 2026 en 65&#8239;229 images</h1>
+      <p class="bandeau__chiffres" id="chiffres-cles">
+        65&#8239;229 images publiées sur X du 1<sup>er</sup> au 29 septembre 2026 par quatre familles d'acteurs, rangées en 64 clusters par CLIP, UMAP et HDBSCAN.
+      </p>
+    </div>
+    <div class="bandeau__actions">
+      <button type="button" class="bouton bouton--plein" id="lancer-parcours" title="Parcours guidé en quatre étapes (raccourci P)">Parcours guidé</button>
+      <button type="button" class="bouton" id="copier-lien" title="Copier le lien vers cet état exact de l'interface (raccourci L)">Copier le lien</button>
+      <button type="button" class="bouton bouton--icone" id="aide-clavier" title="Raccourcis clavier (?)" aria-label="Raccourcis clavier">?</button>
+    </div>
+  </header>
+
+  <nav class="onglets" aria-label="Vues">
+    <a href="#/carte" data-vue="carte"><kbd>1</kbd>Carte</a>
+    <a href="#/temps" data-vue="temps"><kbd>2</kbd>Temps</a>
+    <a href="#/familles" data-vue="familles"><kbd>3</kbd>Familles d'acteurs</a>
+    <a href="#/resonance" data-vue="resonance"><kbd>4</kbd>Résonance</a>
+    <a href="#/planches" data-vue="planches"><kbd>5</kbd>Planches contact</a>
+    <a href="#/clusters" data-vue="clusters"><kbd>6</kbd>Les 64 clusters</a>
+    <a href="#/limites" data-vue="limites"><kbd>7</kbd>Ce que la méthode rate</a>
+    <a href="#/methode" data-vue="methode" class="onglets__fin">Méthode et sources</a>
+  </nav>
+
+  <main id="vue" tabindex="-1">
+    <section class="chargement" id="chargement" aria-live="polite">
+      <p class="chargement__titre">Chargement des données</p>
+      <div class="chargement__barre"><span id="chargement-barre"></span></div>
+      <p class="chargement__detail" id="chargement-detail">points.bin, clusters.json, meta.json</p>
+    </section>
+    <noscript>
+      <section class="erreur-globale">
+        <h2>Ce dashboard a besoin de JavaScript</h2>
+        <p>Les 65 229 points de la carte sont décodés et dessinés dans le navigateur. Activez JavaScript pour cette page.</p>
+      </section>
+    </noscript>
+  </main>
+
+  <div class="infobulle" id="infobulle" role="tooltip" hidden></div>
+  <div class="notification" id="notification" role="status" aria-live="polite" hidden></div>
+
+  <dialog class="dialogue" id="dialogue-clavier" aria-labelledby="titre-clavier">
+    <h2 id="titre-clavier">Raccourcis clavier</h2>
+    <dl class="raccourcis">
+      <dt><kbd>1</kbd> … <kbd>7</kbd></dt><dd>changer de vue</dd>
+      <dt><kbd>/</kbd></dt><dd>rechercher un cluster</dd>
+      <dt><kbd>Espace</kbd></dt><dd>lire ou mettre en pause la séquence (carte)</dd>
+      <dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>reculer ou avancer d'un jour (carte) ; image précédente ou suivante (visionneuse)</dd>
+      <dt><kbd>Maj</kbd> + <kbd>←</kbd> <kbd>→</kbd></dt><dd>reculer ou avancer d'une heure</dd>
+      <dt><kbd>0</kbd></dt><dd>recadrer la carte</dd>
+      <dt><kbd>+</kbd> <kbd>−</kbd></dt><dd>zoomer, dézoomer</dd>
+      <dt><kbd>B</kbd></dt><dd>afficher ou masquer le bruit</dd>
+      <dt><kbd>N</kbd></dt><dd>afficher ou masquer les noms de clusters</dd>
+      <dt><kbd>C</kbd></dt><dd>changer le mode de couleur de la carte</dd>
+      <dt><kbd>F</kbd></dt><dd>plein écran</dd>
+      <dt><kbd>L</kbd></dt><dd>copier le lien de l'état courant</dd>
+      <dt><kbd>P</kbd></dt><dd>parcours guidé</dd>
+      <dt><kbd>Échap</kbd></dt><dd>désélectionner, fermer</dd>
+      <dt><kbd>Ctrl</kbd> + clic</dt><dd>ajouter un cluster à la sélection</dd>
+    </dl>
+    <form method="dialog"><button class="bouton" type="submit">Fermer</button></form>
+  </dialog>
+
+  <dialog class="visionneuse" id="visionneuse" aria-label="Image en grand"></dialog>
+
+  <script src="assets/vendor/d3-7.9.0.min.js"></script>
+  <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>
