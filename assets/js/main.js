@@ -158,7 +158,7 @@ async function demarre() {
     afficheErreur(e);
     return;
   }
-  window.__mesures = { chargement_ms: Math.round(performance.now() - debut) };
+  window.__mesures = { ...(window.__mesures || {}), chargement_ms: Math.round(performance.now() - debut) };
   document.getElementById("chargement").remove();
   majChiffresCles(donnees);
   initVisionneuse(donnees);
@@ -182,6 +182,8 @@ async function demarre() {
     navigue(a.dataset.vue);
   });
   window.__mesures.premier_rendu_ms = Math.round(performance.now() - debut);
+  // Depuis le début de la navigation, téléchargements compris.
+  window.__mesures.premier_rendu_depuis_navigation_ms = Math.round(performance.now());
 }
 
 demarre();

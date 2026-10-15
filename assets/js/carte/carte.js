@@ -274,6 +274,11 @@ export class VueCarte {
     if (v.noms) this.dessineRegions(ctx);
     if (v.noms) this.dessineNoms(ctx);
     this.dernierRendu = performance.now() - t0;
+    // Mesures lues par la recette de performance (voir README, « Performances »).
+    const m = (window.__mesures ??= {});
+    m.premiere_carte_ms ??= Math.round(performance.now());
+    (m.rendus ??= []).push(this.dernierRendu);
+    if (m.rendus.length > 600) m.rendus.shift();
     if (this.surRendu) this.surRendu(ctx);
   }
 
@@ -516,7 +521,11 @@ export class VueCarte {
     if (!this.vue) return;
     const [x, y] = this.versDonnees(sx, sy);
     const rayon = Math.max(10, this.tailleDePoint() / this.dpr * 1.5) / this.vue.k;
+    const debut = performance.now();
     const i = this.grille.plusProche(x, y, rayon, (j) => this.estVisible(j));
+    const m = (window.__mesures ??= {});
+    (m.survols ??= []).push(performance.now() - debut);
+    if (m.survols.length > 600) m.survols.shift();
     if (i === this.survolPoint) {
       if (i >= 0) infobulle.place(clientX, clientY);
       return;
