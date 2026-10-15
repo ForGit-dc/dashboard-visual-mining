@@ -10,6 +10,7 @@ import { FAMILLES, COULEUR_FAMILLE, barreComposition } from "../couleurs.js";
 import { ROLES } from "../textes.js";
 import * as infobulle from "../ui/infobulle.js";
 import { outils } from "../ui/graphe.js";
+import { aide } from "../ui/aide.js";
 import { ouvre as ouvreVisionneuse } from "../ui/visionneuse.js";
 
 const SEUIL_EFFECTIF = 5; // effectif attendu sous lequel un rapport n'est pas fiable
@@ -62,7 +63,7 @@ export default class VueFamilles {
             Un cluster homogène est un canal ; un cluster mélangé est un sujet que plusieurs familles s'approprient.
             Chaque point est un cluster, de la couleur de sa famille dominante, de surface proportionnelle à son nombre d'images.</p>
           <div class="graphe" id="melange"></div>
-          <p class="note-lecture"><strong>Correction au brief.</strong> Aéronautique Militaire est le cluster dont la famille dominante pèse le moins (34,9 %) :
+          <p class="note-lecture"><strong>Correction au brief.</strong> Aéronautique Militaire est le cluster dont la famille dominante pèse le moins (34,9 %) :
             Media, Officials et Vectors y publient à parts presque égales. Mais à l'entropie, qui compte aussi les Influencers,
             le plus mélangé est Industrie Agroalimentaire (0,91), devant Animaux et Humains (0,87). Les deux lectures sont justes ; elles ne mesurent pas la même chose.</p>
           <p><button type="button" class="bouton" id="vers-carte-familles">Voir la carte recolorée par famille</button></p>
@@ -131,16 +132,23 @@ export default class VueFamilles {
       const c = d3.lab(fond(i, r));
       return c.l < 58 ? "color:#fff;font-weight:700" : "font-weight:700";
     };
-    const entete = (k, titre) => `<th scope="col" aria-sort="${cle === k ? "descending" : "none"}"><button type="button" data-tri="${k}">${titre}${cle === k ? " ▼" : ""}</button></th>`;
+    const bulles = {
+      melange: ["Mélange", "0 : une seule famille publie ; 1 : les quatre à parts égales|Clic : trier du plus mélangé au plus homogène"],
+      n: ["Images", "Images du cluster|Clic : trier du plus gros au plus petit"],
+    };
+    const entete = (k, titre) => {
+      const [t, texte] = bulles[k] ?? [k, `Part des ${k} dans le cluster, divisée par leur part dans le corpus (${pct(part[FAMILLES.indexOf(k)], 1)})|Clic : trier, la plus forte sur-représentation en haut`];
+      return `<th scope="col" aria-sort="${cle === k ? "descending" : "none"}" ${aide(t, texte)}><button type="button" data-tri="${k}">${titre}${cle === k ? " ▼" : ""}</button></th>`;
+    };
     zone.innerHTML = `<div style="max-height:620px;overflow-y:auto;border-top:1px solid var(--encre)"><table class="matrice">
       <thead><tr><th scope="col">Cluster</th>${FAMILLES.map((f, i) => entete(f, `<span class="fam fam--${f}">${f}</span> <span class="discret" style="font-weight:400">${pct(part[i], 1)}</span>`)).join("")}
         ${entete("melange", "Mélange")}<th scope="col" style="min-width:150px">Composition</th>${entete("n", "Images")}</tr></thead>
       <tbody>${lignes.map((f) => `<tr>
-        <td class="nom" data-cluster="${f.id}" title="Ouvrir sur la carte">${html(f.label)}</td>
+        <td class="nom" data-cluster="${f.id}" ${aide(f.label, "Clic : ouvrir ce cluster sur la carte, avec sa fiche")}>${html(f.label)}</td>
         ${FAMILLES.map((fam, i) => {
           const attendu = f.n * part[i];
           const r = f.ratios[i];
-          if (attendu < SEUIL_EFFECTIF) return `<td class="cellule vide-effectif" title="${fam} : ${entier(f.familles[i])} images observées, ${decimal(attendu, 1)} attendues. Effectif trop faible pour lire le rapport.">${ratio(r)}</td>`;
+          if (attendu < SEUIL_EFFECTIF) return `<td class="cellule vide-effectif" ${aide(`${f.label} · ${fam}`, `${entier(f.familles[i])} images observées pour ${decimal(attendu, 1)} attendues|Effectif trop faible : le rapport ne se lit pas`)}>${ratio(r)}</td>`;
           return `<td class="cellule${r <= 1 ? " faible" : ""}" style="background:${fond(i, r)};${encre(i, r)}" data-i="${i}" data-cluster="${f.id}">${ratio(r)}</td>`;
         }).join("")}
         <td class="cellule">${decimal(f.entropie, 2)}</td>

@@ -6,11 +6,12 @@
 // engagements par post de tout le corpus.
 
 import { etat } from "../etat.js";
-import { entier, decimal, pct, mediane, html, accord, enLettres } from "../format.js";
+import { entier, decimal, pct, mediane, engagements, html, accord, enLettres } from "../format.js";
 import { FAMILLES, COULEUR_FAMILLE } from "../couleurs.js";
 import { LOGIQUES } from "../textes.js";
 import * as infobulle from "../ui/infobulle.js";
 import { outils } from "../ui/graphe.js";
+import { aide } from "../ui/aide.js";
 import { place as placeEtiquettes } from "../carte/etiquettes.js";
 
 export default class VueResonance {
@@ -32,7 +33,7 @@ export default class VueResonance {
         <header class="page__entete">
           <span class="kicker">Vue 4 · Résonance contre couverture</span>
           <h2>Beaucoup produit, rien repris : ${vide.length === gabarits.length ? `les ${enLettres(vide.length)} clusters de la production à vide sont tous des gabarits d'éditeurs` : `${enLettres(gabarits.length)} des ${enLettres(vide.length)} clusters de la production à vide sont des gabarits d'éditeurs`}</h2>
-          <p class="chapeau">${html(fd.label)} : ${entier(fd.n)} images, médiane ${mediane(fd.eng.mediane)} engagement par post.
+          <p class="chapeau">${html(fd.label)} : ${entier(fd.n)} images, médiane ${engagements(fd.eng.mediane)} par post.
             ${html(sd.label)} : ${entier(sd.n)} images, médiane ${mediane(sd.eng.mediane)}. Couvrir et être repris sont deux choses différentes ;
             un classement par volume seul ment par omission. En bas à droite, ${accord(vide.length, "cluster")} et ${entier(imagesVide)} images
             (${pct(imagesVide / donnees.n)} du corpus) publiées pour une médiane sous celle du corpus.</p>
@@ -42,7 +43,7 @@ export default class VueResonance {
           <section class="bloc">
             <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap">
               <h3 style="font-size:19px">Volume et reprise des 64 clusters</h3>
-              <label class="interrupteur"><input type="checkbox" id="deciles"> Afficher le 9e décile</label>
+              <label class="interrupteur" ${aide("9e décile", "Prolonge chaque point par un trait jusqu'au 9e décile : 10 % des posts du cluster font plus|Un long trait : quelques posts très repris au-dessus d'une médiane modeste")}><input type="checkbox" id="deciles"> Afficher le 9e décile</label>
             </div>
             <div class="graphe" id="plan"></div>
             <p class="source-graphe">Un point par cluster, de la couleur de sa famille dominante. Coupures : ${entier(this.medianeTaille)} images (médiane des clusters)
@@ -133,7 +134,7 @@ export default class VueResonance {
       .attr("fill", (f) => COULEUR_FAMILLE[FAMILLES[f.dominante]]).attr("stroke", "#f5f3ee").attr("stroke-width", 2)
       .style("cursor", "pointer")
       .on("pointerenter pointermove", (ev, f) => infobulle.montre(`<div style="font-weight:700">${html(f.label)}</div>
-        <div class="infobulle__valeur">${mediane(f.eng.mediane)} engagements médians par post</div>
+        <div class="infobulle__valeur">${engagements(f.eng.mediane)} par post (médiane)</div>
         <div class="infobulle__ligne"><span>Images</span><span>${entier(f.n)}</span></div>
         <div class="infobulle__ligne"><span>Posts</span><span>${entier(f.posts)}</span></div>
         <div class="infobulle__ligne"><span>9e décile</span><span>${entier(f.eng.q90)}</span></div>

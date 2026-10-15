@@ -19,6 +19,8 @@ const SCHEMA = {
   trainee:   ["tr", "bool", true],
   vitesse:   ["v", "entier", 2],           // 1 lent, 2 normal, 3 rapide
   cadrage:   ["z", "cadrage", null],       // [x, y, zoom] ; null = carte entière
+  volet:     ["vo", "bool", true],         // volet des clusters déplié à droite de la carte
+  legende:   ["lg", "bool", true],         // légende de la carte dépliée
   planche:   ["pl", "entier", null],
   colonnes:  ["col", "entier", 6],
   triPlanche:["tp", "texte", "certitude"],

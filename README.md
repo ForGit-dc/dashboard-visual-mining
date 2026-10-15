@@ -31,8 +31,12 @@ Documents d'accompagnement :
 | `7` | **Ce que la méthode rate** | bruit, échantillon daté, événement éclaté, gabarits d'éditeurs, production à vide, double comptage, labels trompeurs, regroupement manuel |
 | | **Méthode et sources** | chaîne de traitement, contenu du dépôt, événements et sources, références |
 
-Un **parcours guidé** en quatre étapes (bouton en haut à droite, touche `P`)
-pilote l'outil réel. Tout l'état de l'interface est dans l'adresse de la page :
+Un **parcours guidé** en dix étapes (bouton en haut à droite, touche `P`)
+traverse les sept vues en pilotant l'outil réel. Chaque commande s'explique au
+survol (ou au clavier, quand elle reçoit le focus) : titre, raccourci, et ce
+qu'elle fait en une phrase ou quelques puces. Sur la carte, le volet de droite
+se replie (`V`) et la légende aussi ; `F` passe toute la page en plein écran,
+onglets compris. Tout l'état de l'interface est dans l'adresse de la page :
 le bouton « Copier le lien » (touche `L`) partage exactement l'écran affiché.
 La liste des raccourcis s'ouvre avec `?`.
 
@@ -50,7 +54,7 @@ assets/
   js/donnees.js             décodage des binaires, statistiques à la demande
   js/carte/                 rendu WebGL, index spatial, noms, séquence et vidéo
   js/vues/                  une vue par fichier, plus le parcours guidé
-  js/ui/                    fiche, visionneuse, infobulle, recherche, exports
+  js/ui/                    fiche, visionneuse, infobulle, aide au survol, plein écran, recherche, exports
   fonts/                    Newsreader, Public Sans, IBM Plex Mono (OFL)
   vendor/                   D3 7.9.0 (ISC)
 data/                       GÉNÉRÉ par scripts/build_data.py, ne pas éditer

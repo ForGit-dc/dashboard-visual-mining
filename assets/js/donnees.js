@@ -104,7 +104,7 @@ export class Donnees {
     }
 
     // Cadre utile : les points classés, sans les quelques points isolés très
-    // loin du reste (quantiles 0,3 % et 99,7 %), pour un premier cadrage lisible.
+    // loin du reste (quantiles 0,3 % et 99,7 %), pour un premier cadrage lisible.
     const xs = [], ys = [];
     for (let i = 0; i < this.n; i++) {
       if (this.p.cluster[i] >= 0) { xs.push(this.x[i]); ys.push(this.y[i]); }

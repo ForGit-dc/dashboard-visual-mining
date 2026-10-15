@@ -4,10 +4,11 @@
 // limite est chiffrée, illustrée, et dit ce qu'elle change à la lecture.
 
 import { etat } from "../etat.js";
-import { entier, decimal, pct, mediane, jourCourt, html, enLettres } from "../format.js";
+import { entier, decimal, pct, mediane, engagements, jourCourt, html, enLettres } from "../format.js";
 import { FAMILLES } from "../couleurs.js";
 import * as infobulle from "../ui/infobulle.js";
 import { outils } from "../ui/graphe.js";
+import { aide } from "../ui/aide.js";
 import { ouvre as ouvreVisionneuse } from "../ui/visionneuse.js";
 
 export default class VueLimites {
@@ -49,7 +50,7 @@ export default class VueLimites {
             <div>
               <p>HDBSCAN laisse de côté ce qui n'appartient à aucune zone dense : <strong>${entier(b.n)} images</strong>, ${pct(b.n / t.images)} du corpus,
                 issues de ${entier(b.posts)} posts. Le fichier source les nomme « DELETE » ; ici, « non classées ».</p>
-              <p>Elles ne sont pas moins reprises que les autres : médiane de <strong>${mediane(b.eng.mediane)} engagements par post</strong>, comme le corpus entier
+              <p>Elles ne sont pas moins reprises que les autres : médiane de <strong>${engagements(b.eng.mediane)} par post</strong>, comme le corpus entier
                 (${mediane(t.mediane_engagement_post)}). Le post le plus engageant de tout le corpus (${entier(b.eng.max)} engagements) n'est dans aucun cluster.</p>
               <p>Leur part reste stable d'un jour à l'autre, entre ${pct(Math.min(...partsBruit), 0)} et ${pct(Math.max(...partsBruit), 0)} : le bruit ne trahit pas un événement que la méthode aurait raté.
                 Il trahit des images trop singulières pour former un groupe, et il touche d'abord les Influencers.</p>
@@ -65,8 +66,8 @@ export default class VueLimites {
           <h3>Les images du dépôt montrent le début du mois : ${pct(tirage.part_4_premiers_jours, 0)} ont été publiées du 1<sup>er</sup> au 4 septembre</h3>
           <div class="colonnes colonnes--2">
             <div>
-              <p>Le brief décrit les ${entier(t.images_locales)} images locales comme « les 10 % les plus représentatifs de chaque cluster, sélectionnés par probabilité décroissante ».
-                C'est vrai, mais incomplet : ${pct(tirage.part_points_classes_proba_1, 0)} des points classés ont une probabilité de 1, bien plus que 10 %.
+              <p>Le brief décrit les ${entier(t.images_locales)} images locales comme « les 10 % les plus représentatifs de chaque cluster, sélectionnés par probabilité décroissante ».
+                C'est vrai, mais incomplet : ${pct(tirage.part_points_classes_proba_1, 0)} des points classés ont une probabilité de 1, bien plus que 10 %.
                 Le tirage s'est donc départagé ailleurs, et les données le montrent sans ambiguïté : dans les ${tirage.clusters_tires_par_plus_petits_id} clusters sur 64,
                 les images locales sont exactement les plus petits <code>document_id</code> parmi les points de probabilité 1.</p>
               <p>Or <code>document_id</code> suit l'ordre de publication (corrélation ${decimal(tirage.correlation_id_date, 3)}).
@@ -74,7 +75,7 @@ export default class VueLimites {
                 aucune le jour d'un pic événementiel.</p>
               <p><strong>Ce que cela change.</strong> Les planches contact, les vignettes de la carte et les quasi-doublons décrivent le début du mois.
                 Les lectures des clusters (« ce qu'on voit ») aussi. Les chiffres, les courbes et la carte, eux, portent sur les ${entier(t.images)} images : ils ne sont pas touchés.</p>
-              <p><strong>Pour la prochaine extraction</strong> : tirer l'échantillon au hasard parmi les points de probabilité 1, ou le stratifier par jour (10 % de chaque cluster et de chaque jour).</p>
+              <p><strong>Pour la prochaine extraction</strong> : tirer l'échantillon au hasard parmi les points de probabilité 1, ou le stratifier par jour (10 % de chaque cluster et de chaque jour).</p>
             </div>
             <div class="graphe" id="biais-echantillon"></div>
           </div>
@@ -115,7 +116,7 @@ export default class VueLimites {
           <p>Le champ <code>engagements</code> est celui du post, recopié sur chacune de ses images. ${entier(t.images_dans_posts_multi)} images (${pct(t.images_dans_posts_multi / t.images)})
             appartiennent à un post qui en porte plusieurs. La somme par image vaut ${entier(t.engagements_par_image)} ; la somme par post, la seule qui ait un sens,
             vaut <strong>${entier(t.engagements_par_post)}</strong> (${pct(t.engagements_par_image / t.engagements_par_post - 1, 1)} d'écart).
-            L'écart frappe les clusters où l'on publie en albums : Cérémonies Commémoratives (90 % de ses images viennent d'albums), Réunions Institutionnelles, Rencontres Citoyennes.
+            L'écart frappe les clusters où l'on publie en albums : Cérémonies Commémoratives (90 % de ses images viennent d'albums), Réunions Institutionnelles, Rencontres Citoyennes.
             Tout ce dashboard compte un engagement par post, et le résume par la médiane.</p>
           <p class="reserve">On ne sait pas laquelle des images d'un album a fait réagir : l'engagement d'un post de quatre images est attribué aux quatre.</p>
         </section>
@@ -163,7 +164,7 @@ export default class VueLimites {
             <li><strong>La famille d'acteurs au niveau de l'image</strong> : elle n'est connue qu'agrégée par cluster. Aucune image n'est colorée par famille.</li>
             <li><strong>Le texte des posts</strong> : aucune recherche plein texte n'est possible sur ce qui accompagne les images.</li>
             <li><strong>Vues, likes, partages séparés</strong> : seul le total d'engagements du post est fourni.</li>
-            <li><strong>Les images du bruit</strong> et les <strong>90 % d'images non échantillonnées</strong> : leur point existe sur la carte, pas leur image.</li>
+            <li><strong>Les images du bruit</strong> et les <strong>90 % d'images non échantillonnées</strong> : leur point existe sur la carte, pas leur image.</li>
             <li><strong>Le fuseau horaire</strong> des dates : les heures sont affichées telles que fournies.</li>
           </ul>
           <p>Avec ces données en plus, j'aurais construit un graphe de circulation entre comptes à partir des quasi-doublons, croisé les familles au niveau de l'image,
@@ -234,7 +235,7 @@ export default class VueLimites {
     svg.append("g").attr("class", "axe").selectAll("text").data([0, 0.2, 0.4, 0.6]).join("text")
       .attr("x", m.g - 6).attr("y", (v) => y(v) + 3.5).attr("text-anchor", "end").text((v) => pct(v, 0));
     svg.append("line").attr("x1", m.g).attr("x2", l - m.d).attr("y1", y(0.1)).attr("y2", y(0.1)).attr("stroke", "#1b1a17").attr("stroke-width", 1);
-    svg.append("text").attr("class", "titre-axe").attr("x", l - m.d).attr("y", y(0.1) - 5).attr("text-anchor", "end").text("10 % attendus si l'échantillon suivait le mois");
+    svg.append("text").attr("class", "titre-axe").attr("x", l - m.d).attr("y", y(0.1) - 5).attr("text-anchor", "end").text("10 % attendus si l'échantillon suivait le mois");
     svg.append("g").selectAll("rect").data(parts).join("rect")
       .attr("x", (_, j) => x(j)).attr("width", x.bandwidth()).attr("y", (v) => y(v)).attr("height", (v) => y(0) - y(v)).attr("fill", "#1b1a17")
       .on("pointerenter pointermove", (ev, v) => {
@@ -283,10 +284,10 @@ export default class VueLimites {
       <p class="chapeau petit">Choisissez des clusters à fusionner : effectifs, médiane par post et courbe sont recalculés à partir des points, chaque post comptant une fois.
         Le regroupement est dans l'adresse de la page : copiez le lien pour le partager.</p>
       <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:12px">
-        ${ids.map((id) => `<button type="button" class="bouton bouton--discret" data-retire="${id}" title="Retirer">${html(this.d.fiche(id).label)} ✕</button>`).join("")}
+        ${ids.map((id) => `<button type="button" class="bouton bouton--discret" data-retire="${id}" aria-label="Retirer ${html(this.d.fiche(id).label)} du regroupement" ${aide("Retirer", `Sort ${this.d.fiche(id).label} du regroupement ; les chiffres sont recalculés`)}>${html(this.d.fiche(id).label)} ✕</button>`).join("")}
         <select class="champ" id="ajout-groupe" aria-label="Ajouter un cluster au regroupement"><option value="">+ ajouter un cluster…</option>
           ${options.filter((f) => !ids.includes(f.id)).map((f) => `<option value="${f.id}">${html(f.label)}</option>`).join("")}</select>
-        <button type="button" class="lien-bouton petit" id="groupe-papal">trois clusters papaux</button>
+        <button type="button" class="lien-bouton petit" id="groupe-papal" ${aide("Trois clusters papaux", "Visite de Léon XIV, Pape Catholique, Visite Papale : un même voyage, séparé par le format des images")}>trois clusters papaux</button>
       </div>
       ${s ? `<div class="colonnes colonnes--2-1">
         <div class="graphe" id="courbe-groupe"></div>

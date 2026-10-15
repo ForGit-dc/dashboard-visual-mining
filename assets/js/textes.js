@@ -5,7 +5,7 @@ export const REGIMES = {
   evenementiel: {
     nom: "Événementiel",
     court: "pic",
-    definition: "le jour de pic vaut au moins 7 fois la médiane quotidienne, ou concentre au moins 15 % des images",
+    definition: "le jour de pic vaut au moins 7 fois la médiane quotidienne, ou concentre au moins 15 % des images",
   },
   semaine: {
     nom: "Jours ouvrés",

@@ -1,10 +1,13 @@
-// Infobulle unique, positionnée près du pointeur et toujours dans la fenêtre.
-// Le contenu est construit avec html() (format.js) ou des nœuds DOM : jamais de
-// données brutes insérées telles quelles.
+// Infobulle de données, unique, positionnée près du pointeur (ou du point
+// survolé) et toujours dans la fenêtre. Le contenu est construit avec html()
+// (format.js) ou des nœuds DOM : jamais de données brutes insérées telles quelles.
+// Les explications des commandes vivent à part, dans aide.js.
 
 const el = () => document.getElementById("infobulle");
 let maintenue = false;
+let jeton = 0;
 
+/** Affiche l'infobulle ; renvoie un jeton qui permet de ne refermer que celle-ci. */
 export function montre(contenu, x, y, { interactive = false } = {}) {
   const b = el();
   if (typeof contenu === "string") b.innerHTML = contenu;
@@ -12,6 +15,7 @@ export function montre(contenu, x, y, { interactive = false } = {}) {
   b.hidden = false;
   b.classList.toggle("interactive", interactive);
   place(x, y);
+  return ++jeton;
 }
 
 export function place(x, y) {
@@ -26,7 +30,13 @@ export function place(x, y) {
   b.style.top = `${haut}px`;
 }
 
-export function cache({ force = false } = {}) {
+/**
+ * Referme l'infobulle, sauf si le pointeur est dessus (lien à cliquer). Avec
+ * `si`, ne referme que l'infobulle ouverte sous ce jeton : une fermeture
+ * différée ne doit pas effacer la bulle qu'une autre vue vient d'ouvrir.
+ */
+export function cache({ force = false, si = null } = {}) {
+  if (si !== null && si !== jeton) return;
   if (maintenue && !force) return;
   maintenue = false;
   el().hidden = true;

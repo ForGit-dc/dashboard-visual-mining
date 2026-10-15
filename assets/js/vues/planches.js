@@ -6,16 +6,17 @@
 // longtemps ; voir SOURCES.md (Whitelaw, PixPlot, planches Magnum).
 
 import { etat } from "../etat.js";
-import { entier, pct, jourCourt, mediane, html, plie, accord, minuteLongue, enLettres } from "../format.js";
+import { entier, pct, jourCourt, mediane, engagements, html, plie, accord, minuteLongue, enLettres } from "../format.js";
 import { FAMILLES, barreComposition } from "../couleurs.js";
 import { LOGIQUES, REGIMES } from "../textes.js";
 import { ouvre as ouvreVisionneuse } from "../ui/visionneuse.js";
 import { courbe } from "../ui/mini.js";
+import { aide } from "../ui/aide.js";
 
 const TRIS = [
-  ["certitude", "Certitude"],
-  ["date", "Date"],
-  ["engagement", "Engagements"],
+  ["certitude", "Certitude", "Les images les plus sûres d'abord : le cœur du cluster, puis ses bords"],
+  ["date", "Date", "Dans l'ordre de publication, du 1er septembre au dernier jour de l'échantillon"],
+  ["engagement", "Engagements", "Les posts les plus repris d'abord ; le chiffre est celui du post"],
 ];
 
 export default class VuePlanches {
@@ -29,7 +30,7 @@ export default class VuePlanches {
         <div class="panneau__entete">
           <h3>Planches contact</h3>
           <input type="search" class="champ" id="filtre-planches" placeholder="Filtrer…" style="width:100%" aria-label="Filtrer les clusters">
-          <p class="petit discret" style="margin:6px 0 0">Chiffre : images disponibles en local, 10 % de chaque cluster.</p>
+          <p class="petit discret" style="margin:6px 0 0">Chiffre : images disponibles en local, 10 % de chaque cluster.</p>
         </div>
         <ul class="liste-clusters" id="liste-planches"></ul>
       </aside>
@@ -116,7 +117,7 @@ export default class VuePlanches {
       <p class="chapeau">Les 65&#8239;229 fichiers ont tous un nom différent, mais une empreinte perceptuelle (dHash, 64 bits, au plus ${this.d.meta.echantillon.seuil_doublon_bits} bits d'écart)
         retrouve ${entier(t.images_en_doublon)} images qui sont la même à quelques pixels près. ${entier(distincts)} groupes sur ${entier(groupes.length)} sont faits de posts tous distincts :
         photos d'agence reprises par plusieurs comptes, visuels génériques réutilisés (« Alerte info »), images d'une même émission.</p>
-      <p class="reserve">Calculé sur les 4&#8239;859 images locales seulement : les 90 % restants ne sont pas dans le dépôt. Et les comptes auteurs n'étant pas dans les données,
+      <p class="reserve">Calculé sur les 4&#8239;859 images locales seulement : les 90 % restants ne sont pas dans le dépôt. Et les comptes auteurs n'étant pas dans les données,
         on ne peut pas dire si deux copies viennent du même compte ou de deux comptes différents.</p>
       <div class="repertoire" style="margin-top:14px">${groupes.slice(0, 12).map((g, k) => `
         <div class="repertoire__item">
@@ -157,22 +158,22 @@ export default class VuePlanches {
           <span class="kicker">Planche · cluster ${f.id} · <span class="etiquette-logique etiquette-logique--${f.logique}">${f.logique}</span></span>
           <h2>${html(f.label)}</h2>
         </div>
-        <div style="display:flex;gap:6px">
-          <button type="button" class="bouton bouton--discret" data-action="carte">Voir sur la carte</button>
-          <button type="button" class="bouton bouton--discret" data-action="temps">Courbe</button>
-          <button type="button" class="bouton bouton--discret" data-action="mur">Le mur</button>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button type="button" class="bouton bouton--discret" data-action="carte" ${aide("Voir sur la carte", "Isole ce cluster sur la carte et ouvre sa fiche")}>Voir sur la carte</button>
+          <button type="button" class="bouton bouton--discret" data-action="temps" ${aide("Courbe", "Ses images jour par jour et ses événements, dans la vue Temps")}>Courbe</button>
+          <button type="button" class="bouton bouton--discret" data-action="mur" ${aide("Le mur", "Revient aux 64 planches", "Échap")}>Le mur</button>
         </div>
       </div>
       <p class="fiche__voit" style="margin:6px 0 4px">${html(f.voit)}</p>
       ${f.note ? `<p class="note-lecture"><strong>Le label trompe.</strong> ${html(f.note)}</p>` : ""}
       <p class="petit discret">${accord(images.length, "image locale", "images locales")} sur ${entier(f.n)} · ${FAMILLES[f.dominante]} ${pct(f.part_dominante, 0)} ·
-        médiane ${mediane(f.eng.mediane)} engagements par post · pic le ${jourCourt(f.pic)} (${pct(f.pct_pic / 100, 0)}), régime ${regime.nom.toLowerCase()}
+        médiane ${engagements(f.eng.mediane)} par post · pic le ${jourCourt(f.pic)} (${pct(f.pct_pic / 100, 0)}), régime ${regime.nom.toLowerCase()}
         ${groupesIci.size ? ` · ${accord(groupesIci.size, "groupe")} de quasi-doublons (${enDoublon} images, signalées ×n)` : ""}</p>
       ${this.dates(f)}
       <div class="planche__outils">
-        <label class="interrupteur">Vignettes par ligne <input type="range" min="3" max="12" step="1" value="${v.colonnes}" id="colonnes-planche" style="width:110px"> <span class="num">${v.colonnes}</span></label>
-        <span class="carte__groupe"><span class="libelle">Ordre</span><span class="segments">${TRIS.map(([k, l]) => `<button type="button" data-tri="${k}" aria-pressed="${v.triPlanche === k}">${l}</button>`).join("")}</span></span>
-        <label class="interrupteur" title="Sépare les images du jour de pic de celles du reste du mois"><input type="checkbox" id="planche-avant-apres" ${v.avantApres ? "checked" : ""}> Jour du pic contre le reste</label>
+        <label class="interrupteur" ${aide("Vignettes par ligne", "Moins de vignettes par ligne, plus grandes : de 3 à 12")}>Vignettes par ligne <input type="range" min="3" max="12" step="1" value="${v.colonnes}" id="colonnes-planche" style="width:110px"> <span class="num">${v.colonnes}</span></label>
+        <span class="carte__groupe"><span class="libelle">Ordre</span><span class="segments">${TRIS.map(([k, l, texte]) => `<button type="button" data-tri="${k}" aria-pressed="${v.triPlanche === k}" ${aide(`Ordre : ${l.toLowerCase()}`, texte)}>${l}</button>`).join("")}</span></span>
+        <label class="interrupteur" ${aide("Jour du pic contre le reste", "Deux planches côte à côte : les images du jour de pic, celles du reste du mois|Le pic a-t-il apporté ses propres images, ou seulement plus des mêmes ?")}><input type="checkbox" id="planche-avant-apres" ${v.avantApres ? "checked" : ""}> Jour du pic contre le reste</label>
       </div>
       <div id="planche-corps"></div>
       <p class="source-graphe" style="margin-top:12px">Ordre « certitude » : probabilité HDBSCAN décroissante, puis proximité du point le plus dense du cluster.
@@ -226,7 +227,7 @@ export default class VuePlanches {
       const droite = tri === "engagement" ? `${entier(p.eng[e.point])} eng.` : `${String(jour + 1).padStart(2, "0")}/09`;
       return `<figure class="vue-image${jour === f.pic && !etat.get("avantApres") ? " vue-image--pic" : ""}">
         <button type="button" data-k="${k}" aria-label="Vue ${k + 1}, ${minuteLongue(p.minute[e.point])}"><img src="${this.d.vignette(e)}" alt="" loading="lazy" decoding="async" width="${e.vl}" height="${e.vh}"></button>
-        ${e.groupe >= 0 ? `<span class="vue-image__doublon" title="Quasi-doublon : la même image apparaît ${taillesGroupes.get(e.groupe)} fois dans l'échantillon">×${taillesGroupes.get(e.groupe)}</span>` : ""}
+        ${e.groupe >= 0 ? `<span class="vue-image__doublon" ${aide("Quasi-doublon", `La même image, à quelques pixels près, apparaît ${taillesGroupes.get(e.groupe)} fois dans l'échantillon local`)}>×${taillesGroupes.get(e.groupe)}</span>` : ""}
         <figcaption><span>${k + 1}</span><span>${droite}</span></figcaption>
       </figure>`;
     }).join("")}</div>`;

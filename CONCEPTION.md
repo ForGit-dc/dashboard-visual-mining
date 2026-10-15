@@ -55,8 +55,9 @@ probabilités 1 ou stratifier par jour.
 
 **Détails mineurs.** Les CSV du dépôt sont en LF, pas en CRLF (le chargement
 gère les deux). 1 468 images sont des PNG, pas des JPG. Les images pèsent
-791 Mo (754 Mio), pas 764 Mo. Les autres constats (b, c, d, e de la section 6)
-sont exacts.
+791 Mo (754 Mio), pas 764 Mo. Les Vectors font 8 644 images sur 65 229, soit
+13,25 % : arrondi, 13,3 %, pas 13,2 % (le brief tronque). Les autres constats
+(b, c, d, e de la section 6) sont exacts.
 
 ## 2. Ce que les images m'ont appris
 
@@ -107,7 +108,7 @@ génériques (« ALERTE INFO »), captures d'une même émission.
 | 8.5 limites | **retenue** | une vue entière : le bruit, l'éclatement papal, les gabarits, les clusters à vide, le double comptage, ce qui n'est pas dans les données. |
 | 8.6 avant/après | **retenue** | sur les clusters événementiels, planche du jour du pic contre le reste du mois. |
 | 8.6 quasi-doublons | **retenue** | dHash 64 bits, calculé à la génération des vignettes, distance de Hamming ≤ 4. |
-| 8.6 parcours guidé | **retenu** | quatre étapes qui pilotent l'outil réel (vue, couleurs, sélection, date), pas des captures. |
+| 8.6 parcours guidé | **retenu** | dix étapes qui traversent les sept vues en pilotant l'outil réel (vue, couleurs, sélection, date), pas des captures ; chaque chiffre cité est calculé à l'ouverture. |
 | 8.6 recherche | **retenue** | sur labels et lectures, avec `ET`, `OU`, `-exclusion`, `"phrase"` et des filtres `famille:`, `logique:`, `images>`, `médiane>`. |
 | 8.6 permaliens | **retenus** | tout l'état de l'interface vit dans l'URL. |
 | aire empilée des 64 clusters | **remplacée** | 64 couches empilées ne se lisent pas. Vue d'ensemble : une crête par cluster (ridgeline) triée par jour de pic, plus le volume quotidien empilé par régime temporel. |
@@ -158,6 +159,17 @@ génériques (« ALERTE INFO »), captures d'une même émission.
   791 Mo. L'image originale n'est chargée qu'à la demande, dans la visionneuse.
 - Tous les fichiers générés ont leur script dans `scripts/`, et
   `scripts/verifier_build.py` revérifie les totaux après génération.
+- **Aide au survol plutôt qu'attribut `title`** (`assets/js/ui/aide.js`) : la
+  bulle native met une seconde à venir et n'admet ni titre, ni raccourci, ni
+  liste. Chaque commande porte son explication ; les longues phrases de légende
+  y sont passées, la légende de la carte ne garde que le codage.
+- **L'infobulle d'un point s'accroche au point**, pas au pointeur, et reste
+  ouverte tant que la souris se dirige vers elle : sans cela, le lien « Ouvrir
+  le post » fuyait le curseur ou cédait la place au point voisin.
+- **Le plein écran porte sur toute la page**, pas sur la seule carte : un
+  élément en plein écran passe au-dessus du reste du document, si bien que les
+  infobulles et le parcours restaient cachés et que le navigateur peignait en
+  noir les zones sans fond.
 
 ## 6. Ce que je ne peux pas faire avec ces données
 

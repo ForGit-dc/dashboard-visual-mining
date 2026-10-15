@@ -5,6 +5,7 @@ import { entier, decimal, pct, ratio, mediane, jourCourt, html, accord } from ".
 import { FAMILLES, barreComposition } from "../couleurs.js";
 import { REGIMES, LOGIQUES } from "../textes.js";
 import { courbe } from "./mini.js";
+import { aide } from "./aide.js";
 
 function rangMediane(donnees, f) {
   const plusHautes = donnees.clusters.filter((c) => c.eng.mediane > f.eng.mediane).length;
@@ -34,10 +35,10 @@ export function construitFiche(donnees, f, actions) {
 
   el.innerHTML = `
     <div class="fiche__retour">
-      <button type="button" class="lien-bouton" data-action="retour">← Tous les clusters</button>
+      <button type="button" class="lien-bouton" data-action="retour" ${aide("Tous les clusters", "Ferme la fiche, rend tous les clusters à la carte et revient à la liste", "Échap")}>← Tous les clusters</button>
       <span class="mono discret">cluster ${f.id}</span>
     </div>
-    <span class="etiquette-logique etiquette-logique--${f.logique}" title="${html(logique.definition)}">${logique.nom}</span>
+    <span class="etiquette-logique etiquette-logique--${f.logique}" ${aide(`Logique : ${logique.nom}`, logique.definition)}>${logique.nom}</span>
     <h3>${html(f.label)}</h3>
     <p class="fiche__voit">${html(f.voit)}</p>
     ${f.note ? `<p class="note-lecture"><strong>Le label trompe.</strong> ${html(f.note)}</p>` : ""}
@@ -61,7 +62,7 @@ export function construitFiche(donnees, f, actions) {
           <span class="fam fam--${fam}">${fam}</span>
           <span class="num">${entier(f.familles[i])}</span>
           <span class="num">${pct(f.parts[i], 1)}</span>
-          <span class="ratio num${f.ratios[i] >= 2 ? " fort" : ""}" title="Part dans ce cluster rapportée à la part de la famille dans le corpus">${ratio(f.ratios[i])}</span>`).join("")}
+          <span class="ratio num${f.ratios[i] >= 2 ? " fort" : ""}" ${aide(`${fam} : ${ratio(f.ratios[i])}`, `Part des ${fam} dans ce cluster (${pct(f.parts[i], 1)}), rapportée à leur part dans tout le corpus|×1 : leur poids habituel ; ×2 : le double`)}>${ratio(f.ratios[i])}</span>`).join("")}
       </div>
       <p class="petit discret" style="margin-top:8px">Mélange : ${decimal(f.entropie, 2)} sur 1 (entropie des quatre parts), ${lectureMelange(f.entropie)}. ×1 = poids de la famille dans tout le corpus.</p>
     </section>
@@ -96,8 +97,8 @@ export function construitFiche(donnees, f, actions) {
     </section>` : ""}
 
     <div class="fiche__liens">
-      <button type="button" class="bouton" data-action="planche">Planche complète</button>
-      <button type="button" class="bouton bouton--discret" data-action="temps">Courbe détaillée</button>
+      <button type="button" class="bouton" data-action="planche" ${aide("Planche complète", `Les ${f.echantillon.length} images locales du cluster, en planche contact`)}>Planche complète</button>
+      <button type="button" class="bouton bouton--discret" data-action="temps" ${aide("Courbe détaillée", "Images par jour, événements sourcés, jour du pic contre le reste du mois")}>Courbe détaillée</button>
     </div>`;
 
   el.querySelector('[data-action="retour"]').addEventListener("click", actions.retour);

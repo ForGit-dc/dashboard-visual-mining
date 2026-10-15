@@ -10,6 +10,7 @@ import { courbe } from "../ui/mini.js";
 import { filtre } from "../ui/recherche.js";
 import { enTsv, enCsv } from "../ui/graphe.js";
 import { copie, telecharge } from "../ui/notifier.js";
+import { aide } from "../ui/aide.js";
 import { versURL } from "../etat.js";
 
 // [clé, titre, unité, numérique, valeur de tri, valeur d'export]
@@ -32,6 +33,26 @@ const COLONNES = [
   ["serie", "1er–29 septembre", "images par jour", false, null],
 ];
 
+// Ce que dit chaque colonne, au survol de son en-tête.
+const DEFINITIONS = {
+  id: "Numéro attribué par HDBSCAN ; il ne dit rien de la taille ni de l'ordre des clusters",
+  label: "Nom donné par le pipeline, puis ce qu'on voit vraiment dans les images (lecture manuelle)|Un clic sur le nom ouvre la fiche sur la carte",
+  logique: "Ce que CLIP regroupe vraiment : un sujet photographié, un genre de document (capture, graphique, carton) ou un gabarit d'éditeur (même charte graphique)",
+  n: "Images du cluster, et leur part dans les 65 229 du corpus",
+  posts: "Posts distincts : un post peut porter jusqu'à quatre images",
+  mediane: "Engagements par post : la moitié des posts du cluster font moins, l'autre moitié plus|Chaque post compte une fois, même avec quatre images",
+  q90: "10 % des posts du cluster dépassent ce nombre d'engagements",
+  premier: "Part des engagements du cluster apportée par son seul post le plus repris|Au-delà de 25 %, le total décrit un post, pas le cluster",
+  dominante: "Famille d'acteurs qui publie le plus d'images dans le cluster, et sa part|La barre montre les quatre familles",
+  melange: "0 : une seule famille publie, c'est un canal|1 : les quatre familles à parts égales, c'est un sujet partagé|Entropie normalisée des quatre parts",
+  vectors: "Part des Vectors dans le cluster, divisée par leur part dans tout le corpus (13,3 %)|×3 : trois fois leur poids habituel",
+  pic: "Jour où le cluster publie le plus d'images",
+  concentration: "Part des images du cluster publiées son jour de pic|Au moins 15 % : le cluster vit d'un événement",
+  regime: "Rythme du cluster sur le mois : événementiel (un pic), jours ouvrés, week-end ou continu",
+  jours: "Jours du mois où le cluster publie au moins une image",
+  serie: "Images par jour, du 1er au 29 septembre ; bandes grises : week-ends",
+};
+
 export default class VueClusters {
   constructor(el, donnees, navigue) {
     this.el = el;
@@ -49,10 +70,10 @@ export default class VueClusters {
         <div class="tableau-outils">
           <input type="search" class="champ" id="recherche-clusters" placeholder="ex. famille:vectors images>300 -football" aria-label="Rechercher des clusters" spellcheck="false" autocomplete="off">
           <span class="petit" id="compte-clusters"></span>
-          <label class="interrupteur"><input type="checkbox" id="avec-bruit"> Afficher les non classées</label>
+          <label class="interrupteur" ${aide("Images non classées", `Ajoute une dernière ligne pour les ${entier(donnees.bruit.n)} images qu'aucun cluster n'a retenues (bruit HDBSCAN)`)}><input type="checkbox" id="avec-bruit"> Afficher les non classées</label>
           <span style="margin-left:auto;display:flex;gap:6px">
-            <button type="button" class="bouton bouton--discret" id="copier-tableau" title="Copier les lignes affichées, collables dans un tableur">Copier le tableau</button>
-            <button type="button" class="bouton bouton--discret" id="csv-tableau">Télécharger le CSV</button>
+            <button type="button" class="bouton bouton--discret" id="copier-tableau" ${aide("Copier le tableau", "Copie les lignes affichées, filtre et tri compris, prêtes à coller dans un tableur")}>Copier le tableau</button>
+            <button type="button" class="bouton bouton--discret" id="csv-tableau" ${aide("Télécharger le CSV", "Les lignes affichées, avec toutes les colonnes et la série des 29 jours|Séparateur point-virgule : le fichier s'ouvre tel quel dans Excel")}>Télécharger le CSV</button>
           </span>
           <p class="aide-recherche">Opérateurs : <code>pape OU football</code> · <code>-football</code> · <code>"faits divers"</code> ·
             <code>famille:vectors</code> · <code>logique:gabarit</code> · <code>regime:evenementiel</code> · <code>pic:25</code> ·
@@ -63,12 +84,12 @@ export default class VueClusters {
         <div class="colonnes colonnes--2" style="margin-top:28px">
           <dl class="petit" style="margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px">
             <dt><strong>Logique</strong></dt><dd>Lecture manuelle des images les plus centrales : ${Object.values(LOGIQUES).map((l) => `<em>${l.nom}</em>, ${l.definition.charAt(0).toLowerCase()}${l.definition.slice(1)}`).join(" ")}</dd>
-            <dt><strong>Médiane, 9<sup>e</sup> décile</strong></dt><dd>Engagements du post, un post comptant une fois par cluster. La moitié des posts du cluster font moins que la médiane, 10 % font plus que le décile.</dd>
-            <dt><strong>1<sup>er</sup> post</strong></dt><dd>Part des engagements du cluster apportée par son post le plus engageant. Au-delà de 25 %, le total ne dit rien du cluster.</dd>
+            <dt><strong>Médiane, 9<sup>e</sup> décile</strong></dt><dd>Engagements du post, un post comptant une fois par cluster. La moitié des posts du cluster font moins que la médiane, 10 % font plus que le décile.</dd>
+            <dt><strong>1<sup>er</sup> post</strong></dt><dd>Part des engagements du cluster apportée par son post le plus engageant. Au-delà de 25 %, le total ne dit rien du cluster.</dd>
           </dl>
           <dl class="petit" style="margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px">
             <dt><strong>Mélange</strong></dt><dd>Entropie des parts des quatre familles, ramenée entre 0 (une seule famille publie : un canal) et 1 (quatre familles à parts égales : un sujet partagé).</dd>
-            <dt><strong>Vectors</strong></dt><dd>Part des Vectors dans le cluster, divisée par leur part dans tout le corpus (13,2 %). ×4,6 : quatre fois et demie leur poids habituel.</dd>
+            <dt><strong>Vectors</strong></dt><dd>Part des Vectors dans le cluster, divisée par leur part dans tout le corpus (13,3 %). ×4,6 : quatre fois et demie leur poids habituel.</dd>
             <dt><strong>Au pic, régime</strong></dt><dd>Part des images du cluster publiées son jour le plus actif. Régimes : ${Object.values(REGIMES).map((r) => `<em>${r.nom.toLowerCase()}</em> : ${r.definition}`).join(" ; ")}.</dd>
           </dl>
         </div>
@@ -136,7 +157,8 @@ export default class VueClusters {
     const entete = `<thead><tr>${COLONNES.map(([cle, titre, unite, num, tri]) => {
       const sort = v.tri === cle ? (v.sens === "asc" ? "ascending" : "descending") : "none";
       const contenu = tri ? `<button type="button" data-tri="${cle}">${titre}</button>` : titre;
-      return `<th class="${num ? "n" : ""}" aria-sort="${sort}" scope="col">${contenu}${unite ? `<span class="unite">${unite}</span>` : ""}</th>`;
+      const bulle = DEFINITIONS[cle] ? aide(titre.replace(/<[^>]+>/g, ""), `${DEFINITIONS[cle]}${tri ? "|Clic : trier ; second clic : inverser" : ""}`) : "";
+      return `<th class="${num ? "n" : ""}" aria-sort="${sort}" scope="col" ${bulle}>${contenu}${unite ? `<span class="unite">${unite}</span>` : ""}</th>`;
     }).join("")}</tr></thead>`;
 
     if (!tries.length) {

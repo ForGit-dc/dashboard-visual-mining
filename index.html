@@ -24,21 +24,21 @@
       </p>
     </div>
     <div class="bandeau__actions">
-      <button type="button" class="bouton bouton--plein" id="lancer-parcours" title="Parcours guidé en quatre étapes (raccourci P)">Parcours guidé</button>
-      <button type="button" class="bouton" id="copier-lien" title="Copier le lien vers cet état exact de l'interface (raccourci L)">Copier le lien</button>
-      <button type="button" class="bouton bouton--icone" id="aide-clavier" title="Raccourcis clavier (?)" aria-label="Raccourcis clavier">?</button>
+      <button type="button" class="bouton bouton--plein" id="lancer-parcours" data-aide-titre="Parcours guidé" data-aide="Dix étapes qui racontent le corpus en réglant l'outil à votre place : carte, séquence, familles, résonance, planches, limites|Vous pouvez reprendre la main à tout moment" data-touche="P">Parcours guidé</button>
+      <button type="button" class="bouton" id="copier-lien" data-aide-titre="Copier le lien" data-aide="Copie l'adresse de cet écran exact : vue, couleurs, sélection, date, zoom|Qui ouvre le lien voit la même chose que vous" data-touche="L">Copier le lien</button>
+      <button type="button" class="bouton bouton--icone" id="aide-clavier" aria-label="Raccourcis clavier" data-aide-titre="Raccourcis clavier" data-aide="La liste de toutes les touches de l'outil" data-touche="?">?</button>
     </div>
   </header>
 
   <nav class="onglets" aria-label="Vues">
-    <a href="#/carte" data-vue="carte"><kbd>1</kbd>Carte</a>
-    <a href="#/temps" data-vue="temps"><kbd>2</kbd>Temps</a>
-    <a href="#/familles" data-vue="familles"><kbd>3</kbd>Familles d'acteurs</a>
-    <a href="#/resonance" data-vue="resonance"><kbd>4</kbd>Résonance</a>
-    <a href="#/planches" data-vue="planches"><kbd>5</kbd>Planches contact</a>
-    <a href="#/clusters" data-vue="clusters"><kbd>6</kbd>Les 64 clusters</a>
-    <a href="#/limites" data-vue="limites"><kbd>7</kbd>Ce que la méthode rate</a>
-    <a href="#/methode" data-vue="methode" class="onglets__fin">Méthode et sources</a>
+    <a href="#/carte" data-vue="carte" data-aide="Les 65 229 images placées par ressemblance visuelle, et le mois rejoué heure par heure"><kbd>1</kbd>Carte</a>
+    <a href="#/temps" data-vue="temps" data-aide="Les 64 clusters jour par jour, face aux événements datés et sourcés"><kbd>2</kbd>Temps</a>
+    <a href="#/familles" data-vue="familles" data-aide="Qui publie quoi : Media, Officials, Vectors et Influencers, cluster par cluster"><kbd>3</kbd>Familles d'acteurs</a>
+    <a href="#/resonance" data-vue="resonance" data-aide="Volume contre reprise : publier beaucoup d'images n'est pas être repris"><kbd>4</kbd>Résonance</a>
+    <a href="#/planches" data-vue="planches" data-aide="Les images elles-mêmes, en planches contact, cluster par cluster"><kbd>5</kbd>Planches contact</a>
+    <a href="#/clusters" data-vue="clusters" data-aide="Le tableau complet : tri sur chaque colonne, recherche avec opérateurs, export CSV"><kbd>6</kbd>Les 64 clusters</a>
+    <a href="#/limites" data-vue="limites" data-aide="Bruit, échantillon daté, labels trompeurs, gabarits d'éditeurs : les limites, chiffrées"><kbd>7</kbd>Ce que la méthode rate</a>
+    <a href="#/methode" data-vue="methode" class="onglets__fin" data-aide="La chaîne CLIP, UMAP, HDBSCAN, les sources des événements et les références">Méthode et sources</a>
   </nav>
 
   <main id="vue" tabindex="-1">
@@ -68,10 +68,12 @@
       <dt><kbd>Maj</kbd> + <kbd>←</kbd> <kbd>→</kbd></dt><dd>reculer ou avancer d'une heure</dd>
       <dt><kbd>0</kbd></dt><dd>recadrer la carte</dd>
       <dt><kbd>+</kbd> <kbd>−</kbd></dt><dd>zoomer, dézoomer</dd>
+      <dt><kbd>Début</kbd> <kbd>Fin</kbd></dt><dd>aller au 1<sup>er</sup> septembre ; revenir à tout le mois</dd>
       <dt><kbd>B</kbd></dt><dd>afficher ou masquer le bruit</dd>
       <dt><kbd>N</kbd></dt><dd>afficher ou masquer les noms de clusters</dd>
       <dt><kbd>C</kbd></dt><dd>changer le mode de couleur de la carte</dd>
-      <dt><kbd>F</kbd></dt><dd>plein écran</dd>
+      <dt><kbd>V</kbd></dt><dd>replier ou déplier le volet des clusters (carte)</dd>
+      <dt><kbd>F</kbd></dt><dd>plein écran, sur toutes les vues</dd>
       <dt><kbd>L</kbd></dt><dd>copier le lien de l'état courant</dd>
       <dt><kbd>P</kbd></dt><dd>parcours guidé</dd>
       <dt><kbd>Échap</kbd></dt><dd>désélectionner, fermer</dd>

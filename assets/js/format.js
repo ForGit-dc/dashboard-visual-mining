@@ -44,6 +44,11 @@ export function mediane(v) {
   return Number.isInteger(v) ? entier(v) : decimal(v, 1);
 }
 
+/** « 1 engagement », « 16 engagements » : singulier sous 2, comme le veut l'usage. */
+export function engagements(v) {
+  return `${mediane(v)}${" "}${v >= 2 ? "engagements" : "engagement"}`;
+}
+
 // Locale D3 pour les axes, cohérente avec les fonctions ci-dessus.
 export const localeD3 = window.d3
   ? d3.formatLocale({ decimal: ",", thousands: FINE, grouping: [3], currency: ["", " €"], percent: `${FINE}%` })

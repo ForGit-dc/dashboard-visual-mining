@@ -29,7 +29,7 @@ export function melange(a, b, t) {
 }
 
 // Sur-représentation des Vectors : rapport entre leur part dans le cluster et
-// leur part dans le corpus (13,2 %). En dessous de 1, gris : pas de signal.
+// leur part dans le corpus (13,3 %). En dessous de 1, gris : pas de signal.
 export const rampeVectors = d3.scaleLog()
   .domain([1, 2, 4, 6.2])
   .range(["#e3d6cf", "#e49a8b", "#cf3d2e", "#7f1f16"])
@@ -54,7 +54,7 @@ export function couleurCluster(fiche, mode) {
   switch (mode) {
     case "famille": {
       // Teinte = famille dominante ; intensité = part de cette famille.
-      // Un cluster mélangé (35 %) tire vers le gris : c'est un sujet partagé.
+      // Un cluster mélangé (35 %) tire vers le gris : c'est un sujet partagé.
       const t = Math.max(0.12, Math.min(1, (fiche.part_dominante - 0.3) / 0.65));
       return melange(GRIS_NEUTRE, COULEUR_FAMILLE[FAMILLES[fiche.dominante]], t);
     }

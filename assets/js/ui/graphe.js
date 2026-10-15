@@ -2,6 +2,7 @@
 // source dans l'image) et copie des données sous-jacentes.
 
 import { telecharge, copie, notifie } from "./notifier.js";
+import { aide } from "./aide.js";
 
 const POLICES = [
   ["Public Sans", "normal", "300 800", "assets/fonts/public-sans-normal-300-800-latin.woff2"],
@@ -116,7 +117,8 @@ export function enCsv(lignes, colonnes) {
 export function outils(conteneur, options) {
   const barre = document.createElement("div");
   barre.className = "outils-graphe";
-  barre.innerHTML = `<button type="button" data-png title="Télécharger ce graphique en PNG">PNG</button>${options.donnees ? '<button type="button" data-donnees title="Copier les données du graphique (collables dans un tableur)">Données</button>' : ""}`;
+  barre.innerHTML = `<button type="button" data-png ${aide("Exporter en PNG", "Télécharge ce graphique, avec son titre et sa source écrits dans l'image")}>PNG</button>${options.donnees
+    ? `<button type="button" data-donnees ${aide("Copier les données", "Copie les chiffres du graphique, prêts à coller dans un tableur")}>Données</button>` : ""}`;
   barre.querySelector("[data-png]").addEventListener("click", () =>
     exportePng(options.svg(), options.nom, { titre: options.titre, sousTitre: options.sousTitre, source: options.source ?? "SPINE France · analyse 691 · opsci.ai" }));
   barre.querySelector("[data-donnees]")?.addEventListener("click", () => {

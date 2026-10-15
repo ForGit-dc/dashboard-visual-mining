@@ -142,6 +142,8 @@ kbd {
 }
 .bouton:hover { background: var(--papier-2); }
 .bouton:disabled { opacity: 0.45; cursor: not-allowed; }
+.bouton[aria-disabled="true"] { opacity: 0.45; cursor: default; }
+.bouton[aria-disabled="true"]:hover { background: transparent; }
 .bouton--plein { background: var(--encre); color: var(--papier); }
 .bouton--plein:hover { background: #000; }
 .bouton--icone { width: 30px; padding: 6px 0; text-align: center; }
@@ -212,7 +214,10 @@ main { min-height: 0; position: relative; outline: none; }
 .vue.active { display: block; }
 .vue--plein { height: calc(100vh - var(--hauteur-haut, 150px)); min-height: 560px; }
 .vue--plein.active { display: grid; }
-.vue--plein:fullscreen { height: 100vh; background: var(--papier); }
+/* Plein écran : toute la page passe en plein écran (voir ui/plein-ecran.js) ;
+   sur la carte, le bandeau de titre s'efface et les onglets restent. */
+:root:fullscreen { background: var(--papier); }
+:root:fullscreen body[data-vue="carte"] .bandeau { display: none; }
 
 .page { max-width: 1320px; margin: 0 auto; padding: 22px var(--marge) 64px; }
 .page--large { max-width: 1720px; }
@@ -276,6 +281,44 @@ main { min-height: 0; position: relative; outline: none; }
 .infobulle .cle { display: inline-block; width: 12px; height: 3px; vertical-align: middle; margin-right: 6px; }
 .infobulle__image { display: block; width: 100%; max-height: 220px; object-fit: contain; background: var(--papier-2); margin-bottom: 8px; min-height: 60px; }
 .infobulle__absente { font-size: var(--t-xs); color: var(--encre-3); border: 1px dashed var(--filet-fort); padding: 8px; margin-bottom: 8px; }
+.infobulle__liste { margin: 5px 0 6px; padding: 0; list-style: none; }
+.infobulle__liste li { position: relative; padding-left: 12px; margin-top: 3px; }
+.infobulle__liste li::before { content: ""; position: absolute; left: 1px; top: 0.6em; width: 5px; height: 5px; background: var(--encre); }
+
+/* Aide au survol des commandes (ui/aide.js) : accrochée à la commande, avec
+   une pointe ; titre, raccourci, puis une phrase ou quelques puces. */
+.aide {
+  position: fixed;
+  z-index: 90;
+  max-width: 310px;
+  background: #fffefb;
+  border: 1px solid var(--encre);
+  padding: 8px 11px 9px;
+  font-size: var(--t-s);
+  line-height: 1.42;
+  color: var(--encre-2);
+  pointer-events: none;
+}
+.aide::before {
+  content: "";
+  position: absolute;
+  left: var(--pointe, 50%);
+  top: -6px;
+  width: 9px;
+  height: 9px;
+  background: #fffefb;
+  border-left: 1px solid var(--encre);
+  border-top: 1px solid var(--encre);
+  transform: translateX(-50%) rotate(45deg);
+}
+.aide--dessus::before { top: auto; bottom: -6px; transform: translateX(-50%) rotate(225deg); }
+.aide__tete { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; color: var(--encre); margin-bottom: 2px; }
+.aide__tete strong { font-weight: 700; }
+.aide__tete kbd { flex-shrink: 0; }
+.aide p { margin: 0; }
+.aide ul { margin: 0; padding: 0; list-style: none; }
+.aide li { position: relative; padding-left: 12px; margin-top: 3px; }
+.aide li::before { content: ""; position: absolute; left: 1px; top: 0.6em; width: 5px; height: 5px; background: var(--encre); }
 
 .notification {
   position: fixed;
@@ -340,13 +383,14 @@ main { min-height: 0; position: relative; outline: none; }
   gap: 10px 18px;
   padding: 10px var(--marge) 8px;
   border-bottom: 1px solid var(--filet);
+  background: var(--papier);
 }
-.carte__titre { width: 100%; display: flex; align-items: baseline; gap: 14px; justify-content: space-between; }
-.carte__titre h2 { font-size: 19px; line-height: 1.2; }
+.carte__titre { width: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+.carte__titre h2 { font-size: 19px; line-height: 1.2; flex: 1 1 420px; }
 .carte__titre .discret { font-size: var(--t-xs); white-space: nowrap; }
+.carte__actions { display: inline-flex; gap: 8px; }
 .carte__groupe { display: inline-flex; align-items: center; gap: 8px; font-size: var(--t-s); }
 .carte__groupe > .libelle { color: var(--encre-3); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
-.carte__groupe--fin { margin-left: auto; }
 
 .carte__zone { grid-area: carte; position: relative; overflow: hidden; background: var(--papier); cursor: grab; touch-action: none; }
 .carte__zone.glisse { cursor: grabbing; }
@@ -356,20 +400,36 @@ main { min-height: 0; position: relative; outline: none; }
 
 .legende {
   position: absolute;
-  right: 14px;
+  right: 12px;
   bottom: 12px;
   background: rgba(245, 243, 238, 0.94);
   border: 1px solid var(--filet);
-  padding: 8px 10px 9px;
+  padding: 6px 8px 7px 10px;
   font-size: var(--t-xs);
-  max-width: 330px;
-  line-height: 1.4;
+  max-width: 300px;
+  line-height: 1.35;
 }
-.legende__titre { font-weight: 700; font-size: var(--t-xs); margin-bottom: 4px; }
-.legende__ligne { display: flex; align-items: center; gap: 8px; margin: 3px 0; }
-.legende__rampe { height: 8px; width: 150px; border: 0; }
+.legende__tete { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 3px; }
+.legende--repliee .legende__tete { margin: 0; }
+.legende__titre { font-weight: 700; font-size: var(--t-xs); }
+.legende__bascule {
+  border: 1px solid var(--filet-fort);
+  background: var(--papier);
+  width: 20px;
+  height: 18px;
+  padding: 0;
+  line-height: 1;
+  font-size: 13px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.legende__bascule:hover { border-color: var(--encre); background: var(--papier-2); }
+.legende__ligne { display: flex; align-items: center; gap: 7px; margin: 2px 0; }
+.legende__familles { display: grid; grid-template-columns: repeat(2, auto); gap: 0 14px; justify-content: start; }
+.legende__familles .legende__ligne { gap: 5px; }
+.legende__rampe { height: 8px; width: 150px; border: 0; display: block; margin-top: 2px; }
 .legende__echelle { display: flex; justify-content: space-between; width: 150px; font-variant-numeric: tabular-nums; color: var(--encre-3); font-size: 10px; }
-.legende p { margin: 5px 0 0; color: var(--encre-3); }
+.legende p { margin: 3px 0 2px; color: var(--encre-3); }
 
 .zoom {
   position: absolute;
@@ -399,35 +459,87 @@ main { min-height: 0; position: relative; outline: none; }
 
 .carte__repli { position: absolute; inset: 0; display: grid; place-items: center; padding: 40px; text-align: center; color: var(--encre-2); }
 
-/* Frise de la séquence */
+/* Frise de la séquence : commandes sur une ligne, frise des jours sur toute la largeur */
 .frise {
   grid-area: frise;
   border-top: 1px solid var(--filet);
-  padding: 8px var(--marge) 10px;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: 6px 16px;
-  align-items: center;
+  padding: 8px var(--marge) 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--papier);
 }
-.frise__commandes { display: flex; align-items: center; gap: 8px; }
-.frise__lecture { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--encre); background: var(--encre); color: var(--papier); cursor: pointer; display: grid; place-items: center; padding: 0; }
-.frise__lecture:hover { background: #000; }
-.frise__lecture svg { width: 14px; height: 14px; }
-.frise__date { font: 500 var(--t-l)/1.1 var(--serif); min-width: 168px; font-variant-numeric: tabular-nums; }
+.frise__haut { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; }
+.frise__lecture { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 138px; padding: 8px 14px 8px 12px; font-size: 13px; }
+.frise__icone { display: inline-flex; }
+.frise__lecture svg { width: 12px; height: 12px; }
+.frise__date { font: 500 var(--t-l)/1.1 var(--serif); min-width: 150px; font-variant-numeric: tabular-nums; }
 .frise__date small { display: block; font: 600 10px/1.3 var(--sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--encre-3); }
+.frise__options { margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px 12px; }
 .frise svg.frise__axe { width: 100%; height: 64px; display: block; cursor: pointer; overflow: visible; }
-.frise__options { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
 
-/* Panneau latéral (fiche ou liste) */
+/* Volet latéral (liste ou fiche), repliable en une bande qui garde son titre */
 .panneau {
   grid-area: panneau;
   border-left: 1px solid var(--filet);
-  overflow-y: auto;
   min-height: 0;
   background: var(--papier);
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
+.panneau__contenu { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+.panneau__bascule {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--filet-fort);
+  border-radius: 2px;
+  background: var(--papier);
+  padding: 5px 6px 5px 8px;
+  font: 600 10.5px/1 var(--sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--encre-2);
+  cursor: pointer;
+}
+.panneau__bascule:hover { border-color: var(--encre); color: var(--encre); background: var(--papier-2); }
+.panneau__bascule svg { width: 10px; height: 10px; flex-shrink: 0; }
+.vue-carte.volet-ferme { grid-template-columns: minmax(0, 1fr) 42px; }
+.vue-carte.volet-ferme .panneau__contenu { display: none; }
+.vue-carte.volet-ferme .panneau__bascule {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 14px;
+  padding: 12px 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--papier-2);
+  font-size: 11.5px;
+  letter-spacing: 0.09em;
+  color: var(--encre);
+}
+.vue-carte.volet-ferme .panneau__bascule:hover { background: var(--papier-3); }
+/* La flèche dans un vrai bouton carré : la bande se lit comme une commande. */
+.vue-carte.volet-ferme .panneau__bascule svg {
+  width: 26px;
+  height: 26px;
+  padding: 7px;
+  border: 1px solid var(--encre);
+  background: var(--papier);
+  flex-shrink: 0;
+}
+.panneau__vertical { writing-mode: vertical-rl; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-height: calc(100% - 40px); }
 .panneau__entete { padding: 12px 16px 10px; border-bottom: 1px solid var(--filet); position: sticky; top: 0; background: var(--papier); z-index: 2; }
-.panneau__entete h3 { font-size: 17px; margin-bottom: 6px; }
+.panneau__entete h3 { font-size: 17px; margin-bottom: 6px; padding-right: 92px; }
+.panneau .fiche__retour { padding-right: 92px; }
 .liste-clusters { list-style: none; margin: 0; padding: 0; }
 .liste-clusters li { border-bottom: 1px solid var(--papier-3); }
 .liste-clusters button {
@@ -699,7 +811,8 @@ table.donnees th .unite { display: block; font-weight: 400; color: var(--encre-3
   z-index: 70;
   padding: 14px 18px 14px;
 }
-body[data-vue="carte"] .parcours { right: calc(var(--panneau) + 16px); bottom: 112px; }
+body[data-vue="carte"] .parcours { right: calc(var(--panneau) + 16px); bottom: 124px; }
+body[data-vue="carte"][data-volet="ferme"] .parcours { right: 58px; }
 .parcours__etape { font: 600 var(--t-xs)/1 var(--sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--encre-3); display: flex; justify-content: space-between; }
 .parcours h3 { font-size: 21px; line-height: 1.2; margin: 8px 0 8px; }
 .parcours p { font-size: var(--t-s); color: var(--encre-2); }
@@ -720,7 +833,7 @@ body[data-vue="carte"] .parcours { right: calc(var(--panneau) + 16px); bottom: 1
 @media (max-width: 820px) {
   .bandeau { flex-direction: column; align-items: flex-start; }
   .bandeau h1 { font-size: 26px; }
-  .vue-carte {
+  .vue-carte, .vue-carte.volet-ferme {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto 62vh auto auto;
     grid-template-areas: "outils" "carte" "frise" "panneau";
@@ -728,7 +841,12 @@ body[data-vue="carte"] .parcours { right: calc(var(--panneau) + 16px); bottom: 1
   }
   .vue--plein { height: auto; }
   .panneau { border-left: 0; border-top: 1px solid var(--filet); max-height: none; }
-  .frise { grid-template-columns: minmax(0, 1fr); }
+  /* Sur téléphone, la liste est sous la carte : rien à replier. */
+  .panneau__bascule { display: none; }
+  .vue-carte.volet-ferme .panneau__contenu { display: block; }
+  .panneau__entete h3, .panneau .fiche__retour { padding-right: 0; }
+  .frise__options { margin-left: 0; justify-content: flex-start; }
+  body[data-vue="carte"] .parcours, body[data-vue="carte"][data-volet="ferme"] .parcours { right: 12px; bottom: 12px; }
   .vue-planches { grid-template-columns: minmax(0, 1fr); }
   .planches__choix { max-height: 220px; border-right: 0; border-bottom: 1px solid var(--filet); }
   .colonnes--2, .colonnes--3, .colonnes--2-1, .colonnes--4, .chaine, .avant-apres { grid-template-columns: minmax(0, 1fr); }

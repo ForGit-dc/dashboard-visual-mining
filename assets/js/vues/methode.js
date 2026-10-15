@@ -54,7 +54,7 @@ soft clustering désactivé</code>
                 <tr><td>Clusters</td><td class="n">${t.clusters}</td><td class="discret petit">de 207 à 7&#8239;111 images</td></tr>
                 <tr><td>Non classées</td><td class="n">${entier(t.bruit)}</td><td class="discret petit">${pct(t.bruit / t.images)} du corpus</td></tr>
                 <tr><td>Engagements</td><td class="n">${entier(t.engagements_par_post)}</td><td class="discret petit">un par post ; ${entier(t.engagements_par_image)} si l'on somme par image</td></tr>
-                <tr><td>Images locales</td><td class="n">${entier(t.images_locales)}</td><td class="discret petit">10 % les plus certaines de chaque cluster, en vignettes WebP de 256 px</td></tr>
+                <tr><td>Images locales</td><td class="n">${entier(t.images_locales)}</td><td class="discret petit">10 % les plus certaines de chaque cluster, en vignettes WebP de 256 px</td></tr>
                 <tr><td>Quasi-doublons</td><td class="n">${entier(t.groupes_doublons)}</td><td class="discret petit">groupes, ${entier(t.images_en_doublon)} images (dHash, ≤ ${m.echantillon.seuil_doublon_bits} bits)</td></tr>
               </tbody>
             </table>

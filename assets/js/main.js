@@ -6,6 +6,8 @@ import { etat, VUES } from "./etat.js";
 import { chargeTout, ErreurDonnees } from "./donnees.js";
 import { VueCarte } from "./carte/carte.js";
 import { initVisionneuse } from "./ui/visionneuse.js";
+import { initAide } from "./ui/aide.js";
+import { bascule as basculePleinEcran } from "./ui/plein-ecran.js";
 import { copie } from "./ui/notifier.js";
 import { entier, decimal, pct } from "./format.js";
 
@@ -59,7 +61,7 @@ function majChiffresCles(d) {
      <strong>${t.clusters} clusters</strong> (CLIP, UMAP, HDBSCAN) ·
      <strong>${entier(t.bruit)} non classées</strong> (${pct(t.bruit / t.images)}) ·
      <strong>${decimal(t.engagements_par_post / 1e6, 2)} millions d'engagements</strong>, comptés une fois par post ·
-     ${entier(t.images_locales)} images consultables (10 % par cluster)`;
+     ${entier(t.images_locales)} images consultables (10 % par cluster)`;
 }
 
 async function active_(nom) {
@@ -121,6 +123,7 @@ function clavier(e) {
   }
   if (e.key === "l" || e.key === "L") { copie(etat.lienAbsolu(), "Lien copié : il rouvre exactement cet écran."); e.preventDefault(); return; }
   if (e.key === "p" || e.key === "P") { lanceParcours(); e.preventDefault(); return; }
+  if (e.key === "f" || e.key === "F") { basculePleinEcran(); e.preventDefault(); return; }
   if (e.key === "Escape" && parcours?.ouvert) { parcours.ferme(); e.preventDefault(); return; }
   if (vues[active]?.clavier?.(e)) e.preventDefault();
 }
@@ -164,6 +167,8 @@ async function demarre() {
   initVisionneuse(donnees);
   hauteurEntete();
   window.addEventListener("resize", hauteurEntete);
+  // En plein écran, le bandeau de la carte s'efface : la carte reprend sa hauteur.
+  document.addEventListener("fullscreenchange", hauteurEntete);
 
   await active_(etat.get("vue"));
   etat.ecoute(["vue"], (_, v) => active_(v.vue));
@@ -189,4 +194,5 @@ async function demarre() {
   window.__mesures.premier_rendu_depuis_navigation_ms = Math.round(performance.now());
 }
 
+initAide();
 demarre();

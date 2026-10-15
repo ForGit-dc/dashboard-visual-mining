@@ -8,7 +8,7 @@
 // valeurs absolues, avec ses images du jour de pic contre celles du reste du mois.
 
 import { etat } from "../etat.js";
-import { entier, pct, jourCourt, jourMoyen, html, accord, estWeekend, mediane } from "../format.js";
+import { entier, pct, jourCourt, jourMoyen, html, accord, estWeekend, mediane, engagements } from "../format.js";
 import { REGIMES, ORDRE_REGIMES } from "../textes.js";
 import * as infobulle from "../ui/infobulle.js";
 import { outils } from "../ui/graphe.js";
@@ -188,7 +188,7 @@ export default class VueTemps {
       .map((c) => `<option value="${c.id}"${c.id === id ? " selected" : ""}>${html(c.label)}</option>`).join("");
     zone.innerHTML = `
       <h3>${html(f.label)} : ${entier(f.serie[f.pic])} images le ${jourCourt(f.pic)}, ${pct(f.pct_pic / 100, 1)} du cluster en un jour</h3>
-      <p class="chapeau">Régime ${REGIMES[f.regime].nom.toLowerCase()} · ${accord(f.n, "image")} · médiane ${mediane(f.eng.mediane)} engagements par post.
+      <p class="chapeau">Régime ${REGIMES[f.regime].nom.toLowerCase()} · ${accord(f.n, "image")} · médiane ${engagements(f.eng.mediane)} par post.
         <label style="margin-left:12px">Changer de cluster <select class="champ" id="choix-temps">${choix}</select></label>
         <button type="button" class="lien-bouton" id="voir-carte" style="margin-left:10px">Voir sur la carte</button></p>
       <div class="colonnes colonnes--2-1">
