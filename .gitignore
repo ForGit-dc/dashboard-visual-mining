@@ -218,3 +218,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Brief personnel : reste sur le disque, jamais publié sur GitHub Pages
+brief/BRIEF.txt
+brief/LIRE-EN-PREMIER.md
